@@ -1,10 +1,13 @@
-from flask import Flask, render_template, render_template_string, request, redirect
+from flask import Flask, render_template, request
 from dictionary import Dictionary
 from reader import ReadingAssistant
+import json
+
+with open('config.json') as config_file:
+    config = json.load(config_file)
 
 app = Flask(__name__)
-
-dictionary = Dictionary(config['oxford'])
+dictionary = Dictionary(config['oxfordDictionaries'])
 
 
 @app.route('/dict/<word>')

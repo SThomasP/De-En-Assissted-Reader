@@ -19,7 +19,7 @@ function setupTranslations() {
             if (httpRequest.readyState === XMLHttpRequest.DONE) {
                 if (httpRequest.status === 200) {
                     var response = JSON.parse(httpRequest.responseText);
-                    alert(response[0].eng[0]);
+                    alert(response.en[0]);
                 }
                 else {
                     alert('Not in dictionary');

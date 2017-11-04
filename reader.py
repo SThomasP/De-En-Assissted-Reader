@@ -45,8 +45,3 @@ def article_to_list(article):
     return paragraphs
 
 
-
-if __name__ == '__main__':
-    article = ReadingAssistant("http://www.spiegel.de/wissenschaft/mensch/giseh-physiker-finden-riesigen-hohlraum-in-cheopspyramide-a-1176013.html")
-    print(article.a_list)
-
