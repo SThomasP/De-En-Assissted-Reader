@@ -1,0 +1,13 @@
+.entry {
+    border: 2px solid lightgray;
+    width: inherit;
+    margin-top: 2%;
+    border-radius: .25rem !important;
+}
+
+#dict-entries{
+    overflow: auto;
+    position: fixed;
+    height: 100%;
+    right: 0;
+}

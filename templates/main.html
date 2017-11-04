@@ -9,16 +9,18 @@
 
     <title>{% block title %}{% endblock %}</title>
 
-    <!-- Bootstrap core CSS -->
+      <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 
 
     <!-- Font Awesome CSS -->
 
     <script src="https://use.fontawesome.com/9cd4d4c646.js"></script>
-
     <!-- Custom styles for this template -->
     <link href="{{ url_for('static', filename="style.css") }}" rel="stylesheet">
+
+    <!-- allow subpages to put in there own styles -->
+    {% block style_and_script %}{% endblock %}
 
 </head>
 
