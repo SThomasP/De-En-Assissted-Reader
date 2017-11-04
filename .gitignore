@@ -1,0 +1,7 @@
+
+
+# IntelliJ project files
+.idea
+venv
+__pycache__
+config.json

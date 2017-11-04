@@ -1,0 +1,14 @@
+.centre {
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+}
+
+main {
+    text-align: center;
+}
+
+var{
+    font-style: normal;
+}

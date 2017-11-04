@@ -1,0 +1,31 @@
+{% extends "main.html" %}
+{% block title %}
+    {{ article.title }}
+{% endblock %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h1>{{ article.title }}</h1>
+                <p><b><a href="{{ article.url }}">{{ article.source }}</a> </b></p>
+                <p><i>{{ article.authors[2] }}</i></p>
+                <article>
+                    {% for paragraph in article.a_list %}
+                        <p>
+                            {% for is_word, word in paragraph %}
+                                {% if is_word %}
+                                    <var class="word">
+                                        {{ word }}
+                                    </var>
+                                {% else %}
+                                    {{ word }}
+                                {% endif %}
+                            {% endfor %}
+                        </p>
+                    {% endfor %}
+                </article>
+            </div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename="get_translation.js") }}"></script>
+{% endblock %}

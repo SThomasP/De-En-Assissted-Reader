@@ -1,0 +1,26 @@
+{% extends  "main.html" %}
+{% block title %}
+    German Article Reading Assistant
+{% endblock %}
+{% block body %}
+    <div class="centre">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 offset-md-2">
+            <main>
+
+                        <h1>German Article Reading Assistant</h1>
+                        <form action="/read" id="submitURL" method="get" autocomplete="off">
+                            <div class="form-group input-group">
+                                <span class="input-group-addon"><i class="fa fa-link" aria-hidden="true"></i></span>
+                                <input class="form-control" type="text" name="url" placeholder="url" required>
+                            </div>
+                            <input type="submit" value="Read With Assistance" class="btn btn-dark">
+                        </form>
+
+                    </main>
+</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
