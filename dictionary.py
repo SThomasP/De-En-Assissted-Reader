@@ -4,11 +4,12 @@ import requests
 OD_TRANSLATE = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/de/{word}/translations=en'
 OD_LEMMATRON = 'https://od-api.oxforddictionaries.com:443/api/v1/inflections/de/{word}'
 
+
 class Dictionary:
     def __init__(self, config_vars):
         self._headers = config_vars
 
-    def lookup(self, word):
+    def lookup_json(self, word):
         entry = {'de': word, 'en': [], 'root': '', 'category': '', 'grammar': []}
         initial_entry = {'de': word, 'en': [], 'root': '', 'category': '', 'grammar': []}
         in_dict, entry = self._lemmatron(entry)
@@ -21,10 +22,6 @@ class Dictionary:
         else:
             return json.dumps(initial_entry, ensure_ascii=False), 404
 
-
-
-
-
     def _lemmatron(self, entry):
         word = entry['de'].lower()
         r = requests.get(OD_LEMMATRON.format(word=word), headers=self._headers)
@@ -36,7 +33,6 @@ class Dictionary:
             return True, entry
         else:
             return False, entry
-
 
     def _lookup_online(self, entry):
         word = entry['root']
@@ -53,6 +49,26 @@ class Dictionary:
         else:
             return False, entry
 
+    def lookup_html(self, word):
+        # use the already written json code, then pass it into a DictEntry object.
+        # but we're not using that right now
+
+        # entry_json, status_code = self.lookup_json(word)
+        status_code = 200
+        entry_json = "{\"category\": \"noun\", \"grammar\": [{\"Gender\": \"Feminine\", \"Case\": \"Dative\", \"Number\": \"Singular\"}, {\"Gender\": \"Feminine\", \"Case\": \"Genitive\", \"Number\": \"Singular\"}, {\"Gender\": \"Feminine\", \"Case\": \"Accusative\", \"Number\": \"Singular\"}], \"de\": \"Sahne\", \"en\": [\"cream\"], \"root\": \"Sahne\"}"
+        return DictEntry(json.loads(entry_json), status_code)
+
+
+class DictEntry:
+    def __init__(self, entry_json, status_code):
+        self._json = entry_json
+        if status_code == 200:
+            self.found = True
+            self.category = entry_json['category']
+            self.de = entry_json['de']
+            self.root = entry_json['root']
+            self.grammar_string = gen_grammar_string(entry_json['category'], entry_json['root'], entry_json['grammar'])
+            self.en_string = gen_english_string(entry_json['en'])
 
 
 def sort_grammar(gram_fe):
@@ -86,6 +102,25 @@ def sort_grammar(gram_fe):
         occurred[g_type] += 1
 
     return sorted
+
+
+def gen_english_string(english):
+    en_string = ''
+    for word in english:
+        en_string = en_string + ', ' + word
+    en_string = en_string[2:len(en_string)]
+    return en_string
+
+def gen_grammar_string(category, root, grammar):
+    if category == 'noun':
+        return gen_noun_string(grammar[0], root)
+
+
+def gen_noun_string(grammar, root):
+    if grammar['Number'] == 'Singular':
+        return "Singular noun, {}". format(grammar['Gender'].lower())
+    else:
+        return "Plural form of: <i>{}</i>".format(root)
 
 
 def sort_english(entries):

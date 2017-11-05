@@ -3,7 +3,6 @@
     {{ article.title }}
 {% endblock %}
 {% block style_and_script %}
-    <script src="{{ url_for('static', filename="get_translation.js") }}"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='dictionary.css') }}">
 {% endblock %}
 {% block body %}
@@ -17,9 +16,9 @@
                         <p>
                             {% for is_word, word in paragraph %}
                                 {% if is_word %}
-                                    <var class="word">
+                                    <span class="word">
                                         {{ word }}
-                                    </var>
+                                    </span>
                                 {% else %}
                                     {{ word }}
                                 {% endif %}
@@ -29,13 +28,10 @@
                 </article>
             </div>
             <div id="dict-entries" class="col-md-3">
-                    <div class="entry">
-                        <h3>Gerannt</h3>
-                        <p>verb</p>
-                        <p><b>Rennen</b></p>
-                        <p><i>run, run (off)</i></p>
-                    </div>
-                </div>
+
             </div>
         </div>
+
+    <script src="{{ url_for('static', filename="get_translation.js") }}"></script>
+    </div>
 {% endblock %}

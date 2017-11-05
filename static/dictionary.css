@@ -1,8 +1,41 @@
-.entry {
+.entry-outer {
     border: 2px solid lightgray;
     width: inherit;
     margin-top: 2%;
     border-radius: .25rem !important;
+}
+
+.verb{
+    background-color: rebeccapurple;
+}
+
+.noun{
+    background-color: forestgreen;
+}
+
+.dict-header{
+    margin:2%;
+    color: white;
+    text-transform: capitalize;
+}
+
+.dict-close-button{
+    float: right;
+}
+
+.dict-category{
+    color: lightseagreen;
+    background-color: lightgray;
+    font-size: smaller;
+    text-transform: lowercase;
+}
+
+.entry-inner{
+    background-color: white;
+    padding: 2%;
+    width: inherit;
+    border-radius: .25rem !important;
+
 }
 
 #dict-entries{

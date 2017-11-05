@@ -10,11 +10,16 @@ app = Flask(__name__)
 dictionary = Dictionary(config['oxfordDictionaries'])
 
 
-@app.route('/dict/<word>')
-def dict_lookup(word):
-    entry = dictionary.lookup(word)
+@app.route('/dict/json/<word>')
+def json_lookup(word):
+    entry = dictionary.lookup_json(word)
     return entry
 
+
+@app.route('/dict/html/<word>')
+def html_lookup(word):
+    dict_entry = dictionary.lookup_html(word)
+    return render_template("entry.html", entry=dict_entry)
 
 @app.route('/read')
 def read_article():
