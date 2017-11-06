@@ -26,9 +26,12 @@ class Dictionary:
         r = requests.get(OD_LEMMATRON.format(word=word), headers=self._headers)
         if r.status_code == 200:
             r_json = r.json()['results']
-            entry['root'] = r_json[0]['lexicalEntries'][0]['inflectionOf'][0]['text']
             entry['category'] = r_json[0]['lexicalEntries'][0]['lexicalCategory'].lower()
             entry['grammar'] = self.sort_grammar(r_json[0]['lexicalEntries'][0]['grammaticalFeatures'])
+            if entry['category'] == 'adjective' and entry['grammar'][0]['degree'] == "superlative":
+                entry['root'] = r_json[0]['lexicalEntries'][0]['inflectionOf'][1]['text']
+            else:
+                entry['root'] = r_json[0]['lexicalEntries'][0]['inflectionOf'][0]['text']
             return True, entry
         else:
             entry['category'] = "unknown"
@@ -58,7 +61,7 @@ class Dictionary:
         counter = {}
         # count the occurrences of each grammatical type
         for feature in gram_fe:
-            g_type = feature['type']
+            g_type = feature['type'].lower()
             if g_type in counter.keys():
                 counter[g_type] += 1
             else:
@@ -75,14 +78,25 @@ class Dictionary:
 
         # sort the features
         for i in range(len(gram_fe)):
-            g_type = gram_fe[i]['type']
-            text = gram_fe[i]['text']
+            g_type = gram_fe[i]['type'].lower()
+            text = gram_fe[i]['text'].lower()
             o = occurred[g_type]
             sorted[o][g_type] = text
             if o == counter[g_type] - 1:
                 for j in range(o, len(sorted)):
                     sorted[j][g_type] = text
             occurred[g_type] += 1
+
+        # some stuff that has to be coded manually
+        if 'person' in sorted[0].keys() and 'number' in sorted[0].keys() and len(sorted) >= 2:
+            if sorted[0]['person'] == 'second' and sorted[1]['person'] == 'third':
+                sorted[0]['person'] = 'third'
+                sorted[1]['person'] = 'second'
+
+        if 'degree' in sorted[0].keys() and len(sorted) >= 1:
+            if sorted[0]['degree'] == 'positive' and sorted[1]['degree'] == 'comparative':
+                sorted[0]['degree'] = 'comparative'
+                sorted[1]['degree'] = 'positive'
 
         return sorted
 
@@ -104,6 +118,10 @@ class DictEntry:
     def __init__(self, entry_json, status_code):
         self._json = entry_json
         self.category = entry_json['category']
+        if self.category in ['noun', 'verb', 'adjective', 'unknown']:
+            self.css_cat = self.category
+        else:
+            self.css_cat = 'other'
         self.de = entry_json['de']
         if status_code == 200:
             self.found = True
@@ -112,7 +130,7 @@ class DictEntry:
             self.en_string = self.gen_english_string(entry_json['en'])
         else:
             self.found = False
-            self. grammar_string = "Unable to find {} in dictionary".format(self.de)
+            self.grammar_string = "Unable to find {} in dictionary".format(self.de)
 
     @staticmethod
     def gen_english_string(english):
@@ -126,15 +144,50 @@ class DictEntry:
     def gen_grammar_string(category, root, grammar):
         if category == 'noun':
             return DictEntry.gen_noun_string(grammar[0], root)
+        if category == 'verb':
+            return DictEntry.gen_verb_string(grammar, root)
+        if category == 'adjective':
+            return DictEntry.gen_adjective_string(grammar[0], root)
+        else:
+            return DictEntry.gen_others(grammar[0], root)
+
+    @staticmethod
+    def gen_others(grammar, root):
+        grammar_string = ''
+        for feature in grammar.keys():
+            grammar_string = grammar_string + '{}: {}, '.format(feature.capitalize(), grammar[feature])
+        grammar_string = grammar_string + 'Root: <i>{}</i>.'.format(root)
+        return grammar_string
+
+    @staticmethod
+    def gen_adjective_string(grammar, root):
+        if grammar['degree'] == 'positive':
+            return "Positive form."
+        else:
+            grammar_string = '{} form of <i>{}</i>.'.format(grammar['degree'], root)
+            return grammar_string.capitalize()
 
     @staticmethod
     def gen_noun_string(grammar, root):
-        if grammar['Number'] == 'Singular':
-            return "Singular noun, {}".format(grammar['Gender'].lower())
+        if grammar['number'] == 'singular':
+            return "Singular, {}".format(grammar['gender'].lower())
         else:
             return "Plural form of: <i>{}</i>".format(root)
 
-
-
-
-
+    @staticmethod
+    def gen_verb_string(grammar, root):
+        if grammar[0]['tense'] == 'present':
+            grammar_string = ''
+            for g_form in grammar:
+                grammar_string = grammar_string + ', {} person {}'.format(g_form['person'], g_form['number'])
+            grammar_string = grammar_string[2:len(grammar_string)] + ' form of <i>{}</i>.'.format(root)
+            return grammar_string.capitalize()
+        elif grammar[0]['tense'] == 'past' and 'person' not in grammar[0].keys():
+            grammar_string = "Perfect form of <i>{}</i>.".format(root)
+            return grammar_string
+        else:
+            grammar_string = 'Past tense; '
+            for g_form in grammar:
+                grammar_string = grammar_string + '{} person {}, '.format(g_form['person'], g_form['number'])
+            grammar_string = grammar_string[0:len(grammar_string) - 2] + ' form of <i>{}</i>.'.format(root)
+            return grammar_string.capitalize()

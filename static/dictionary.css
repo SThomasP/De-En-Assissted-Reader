@@ -13,6 +13,18 @@
     background-color: forestgreen;
 }
 
+.adjective {
+    background-color: navy;
+}
+
+.unknown {
+    background-color: black;
+}
+
+.other {
+    background-color: darkred;
+}
+
 .dict-header{
     margin:2%;
     color: white;
