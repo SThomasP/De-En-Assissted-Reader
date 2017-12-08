@@ -1,0 +1,22 @@
+\chapter{Proposed Design}
+
+The project will be split into three views, the first, which will be similar to the wireframe in figure \ref{fig:view1} is a selection screen with a text area, where the user can select tags to search by inputting them.
+
+\input{Figures/view1}
+
+Once the user inputs their preferred categories, the application takes those categories and finds relevant L2 articles by looking at articles on various sites, it then takes those articles and displays the title of each article, similar to view shown in figure \ref{fig:view2}
+
+\input{Figures/view2}
+
+From the view shown in figure \ref{fig:view2} the user can select an article, once they do so, the application will download and parse the article, displaying it to the user, similar to the view in figure \ref{fig:view3}.
+
+\input{Figures/view3}
+
+from figure \ref{fig:view3} the user can select a word in the article, this action will send a request to the server for a gloss. The server will then look up translations of the word, along with grammatical information for the word, it will then serve the content, properly formatted, to the user, in a marginal gloss looking similar to the view in figure \ref{fig:view4}.
+
+\input{Figures/view4}
+
+The whole systems process is illustrated in figure \ref{fig:sf}.
+	
+\input{Figures/systemsFlow}
+

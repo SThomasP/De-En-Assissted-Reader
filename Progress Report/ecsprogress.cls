@@ -1,12 +1,18 @@
 %%
-%% This is file `Thesis.cls', based on 'ECSthesis.cls', by Steve R. Gunn
+%% This is file `ecsprogress.cls',
 %% generated with the docstrip utility.
 %%
-%% Created by Steve R. Gunn, modified by Sunil Patel: www.sunilpatel.co.uk
-
+%% The original source files were:
+%%
+%% ecsdocs.dtx  (with options: `progress')
+%% 
+%% Copyright (C) 2001 by Steve R. Gunn
+%% 
+%% This file is part of the ECSDocs class distribution
+%% 
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
-\ProvidesClass{Thesis}
-              [2007/22/02 v1.0
+\ProvidesClass{ecsprogress}
+              [2003/25/04 v1.6
    LaTeX document class]
 \def\baseclass{book}
 \DeclareOption*{\PassOptionsToClass{\CurrentOption}{\baseclass}}
@@ -24,25 +30,7 @@
 \ProcessOptions\relax
 \LoadClass{\baseclass}
 \newcommand\bhrule{\typeout{------------------------------------------------------------------------------}}
-
-\newcommand\Declaration[1]{
-\btypeout{Declaration of Authorship}
-\addtotoc{Declaration of Authorship}
-\thispagestyle{plain}
-\null\vfil
-%\vskip 60\p@
-\begin{center}{\huge\bf Declaration of Authorship\par}\end{center}
-%\vskip 60\p@
-{\normalsize #1}
-\vfil\vfil\null
-%\cleardoublepage
-}
-
 \newcommand\btypeout[1]{\bhrule\typeout{\space #1}\bhrule}
-\def\today{\ifcase\month\or
-  January\or February\or March\or April\or May\or June\or
-  July\or August\or September\or October\or November\or December\fi
-  \space \number\year}
 \usepackage{setspace}
 \onehalfspacing
 \setlength{\parindent}{0pt}
@@ -88,7 +76,7 @@
 \newtheorem{definition}[theorem]{Definition}
 \theoremstyle{remark}
 \newtheorem{remark}[theorem]{Remark}
-\usepackage[centerlast,small,sc]{caption}
+\usepackage[centerlast,small,sc]{caption2}
 \setlength{\captionmargin}{20pt}
 \newcommand{\fref}[1]{Figure~\ref{#1}}
 \newcommand{\tref}[1]{Table~\ref{#1}}
@@ -112,7 +100,6 @@
 \usepackage{booktabs}
 \usepackage{rotating}
 \usepackage{listings}
-\usepackage{lstpatch}
 \lstset{captionpos=b,
         frame=tb,
         basicstyle=\scriptsize\ttfamily,
@@ -145,21 +132,34 @@
 \newcommand*{\FACULTY}[1]{\def\FACNAME{#1}}
 \newcommand*{\subject}[1]{\def\subjectname{#1}}
 \newcommand*{\keywords}[1]{\def\keywordnames{#1}}
-\supervisor  {Dr Adam Prugel-Bennett}
+\supervisor  {}
 \examiner    {}
-\authors     {Steffan T. Padel}
-\university  {University of Southampton}
-\UNIVERSITY  {UNIVERISTY OF SOUTHAMPTON}
-\department  {School of Electronics and Computer Science}
-\DEPARTMENT  {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}
-\group       {\texorpdfstring{\href{Research Group Web Site URL Here (include http://)}
-                {Research Group Name}}
-                {Research Group Name}}
-\GROUP       {\texorpdfstring{\href{Research Group Web Site URL Here (include http://)}
-                {RESEARCH GROUP NAME (IN BLOCK CAPITALS)}}
-                {RESEARCH GROUP NAME (IN BLOCK CAPITALS)}}
-\faculty     {Faculty of Physical Sciences and Engineering}
-\FACULTY     {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}
+\degree      {}
+\authors     {}
+\university  {\texorpdfstring{\href{http://www.soton.ac.uk}
+                {University of Southampton}}
+                {University of Southampton}}
+\UNIVERSITY  {\texorpdfstring{\href{http://www.soton.ac.uk}
+                {UNIVERSITY OF SOUTHAMPTON}}
+                {UNIVERSITY OF SOUTHAMPTON}}
+\department  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+                {School of Electronics and Computer Science}}
+                {School of Electronics and Computer Science}}
+\DEPARTMENT  {\texorpdfstring{\href{http://www.ecs.soton.ac.uk}
+                {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
+                {SCHOOL OF ELECTRONICS AND COMPUTER SCIENCE}}
+\group       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
+                {Image, Speech and Intelligent Systems Group}}
+                {Image, Speech and Intelligent Systems Group}}
+\GROUP       {\texorpdfstring{\href{http://www.isis.ecs.soton.ac.uk}
+                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
+                {IMAGE, SPEECH AND INTELLIGENT SYSTEMS GROUP}}
+\faculty     {\texorpdfstring{\href{http://www.fpse.soton.ac.uk}
+                {Faculty of Physical Sciences and Engineering}}
+                {Faculty of Physical Sciences and Engineering}}
+\FACULTY     {\texorpdfstring{\href{http://www.fpse.soton.ac.uk}
+                {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}}
+                {FACULTY OF PHYSICAL SCIENCES AND ENGINEERING}}
 \addresses   {}
 \subject     {}
 \keywords    {}
@@ -180,24 +180,26 @@
     \begin{center}
       \setlength{\parskip}{0pt}
       {\large\textbf{\UNIVNAME}\par}
-      \vfill
-      {\huge \bf \@title \par}
-      \vfill
-      {\LARGE by \par}
-      \smallskip
-      {\LARGE \authornames \par}
-      \vfill
-      {\large BSc. Computer Science \par}
-      \bigskip
-      \bigskip
-      {\large in the \par}
       {\large \facname \par}
       {\large \deptname \par}
-      \bigskip
-      \bigskip
-      \bigskip
-      {\Large \@date \par}
-      \bigskip
+      \vfill
+      {\large A progress report submitted for continuation}
+      {\large towards a BSc Computer Science \par}
+      \vfill
+      {\normalsize Supervisor: \supname \par}
+      {\normalsize Examiner: \examname \par}
+      \vfill
+      \hspace{6mm}\parbox[t][51mm][s]{89mm}{
+        \center
+        \vfill
+        {\large \bf \@title \par}
+        \vfill
+        {\normalsize by \authornames \par}
+        \vfill
+        {\normalsize \@date \par}
+        \vfill
+      }
+      \parbox[t][95mm][s]{89mm}{}
     \end{center}
     \par
     \@thanks
@@ -222,7 +224,19 @@
   \thispagestyle{empty}
   \null\vfil
   \begin{center}
-    {\huge{\textit{Abstract}} \par}
+    \setlength{\parskip}{0pt}
+    {\normalsize \UNIVNAME \par}
+    \bigskip
+    {\underline{ABSTRACT} \par}
+    \bigskip
+    {\normalsize \FACNAME \par}
+    {\normalsize \DEPTNAME \par}
+    \bigskip
+    {\normalsize \underline{A progress report submitted for continuation towards a BSc Computer Science}\par}
+    \bigskip
+    {\normalsize\bf \@title \par}
+    \medskip
+    {\normalsize by \authornames \par}
     \bigskip
   \end{center}
 }
@@ -255,7 +269,6 @@
 }
 \renewcommand\listoffigures{
 \btypeout{List of Figures}
-\addtotoc{List of Figures}
 \begin{spacing}{1}{
     \setlength{\parskip}{1pt}
     \if@twocolumn
@@ -273,7 +286,6 @@
 }
 \renewcommand\listoftables{
 \btypeout{List of Tables}
-\addtotoc{List of Tables}
 \begin{spacing}{1}{
     \setlength{\parskip}{1pt}
     \if@twocolumn
@@ -289,7 +301,7 @@
     \cleardoublepage
 }\end{spacing}
 }
-\newcommand\listsymbolname{Abbreviations}
+\newcommand\listsymbolname{Nomenclature}
 \usepackage{longtable}
 \newcommand\listofsymbols[2]{
 \btypeout{\listsymbolname}
@@ -300,36 +312,16 @@
 \begin{longtable}[c]{#1}#2\end{longtable}\par
     \cleardoublepage
 }
-\newcommand\listconstants{Physical Constants}
-\usepackage{longtable}
-\newcommand\listofconstants[2]{
-\btypeout{\listconstants}
-\addtotoc{\listconstants}
-    \chapter*{\listconstants
-      \@mkboth{
-          \MakeUppercase\listconstants}{\MakeUppercase\listconstants}}
-\begin{longtable}[c]{#1}#2\end{longtable}\par
-    \cleardoublepage
-}
-\newcommand\listnomenclature{Symbols}
-\usepackage{longtable}
-\newcommand\listofnomenclature[2]{
-\btypeout{\listnomenclature}
-\addtotoc{\listnomenclature}
-    \chapter*{\listnomenclature
-      \@mkboth{
-          \MakeUppercase\listnomenclature}{\MakeUppercase\listnomenclature}}
-\begin{longtable}[c]{#1}#2\end{longtable}\par
-    \cleardoublepage
-}
 \newcommand\acknowledgements[1]{
 \btypeout{Acknowledgements}
 \addtotoc{Acknowledgements}
 \thispagestyle{plain}
-\begin{center}{\huge{\textit{Acknowledgements}} \par}\end{center}
+\null\vfil
+\vskip 60\p@
+\begin{center}{\Large\bf Acknowledgements \par}\end{center}
 {\normalsize #1}
 \vfil\vfil\null
-
+\cleardoublepage
 }
 \newcommand\dedicatory[1]{
 \btypeout{Dedicatory}
@@ -351,4 +343,4 @@
   \@mainmatterfalse}
 \endinput
 %%
-%% End of file `Thesis.cls'.
+%% End of file `ecsprogress.cls'.
