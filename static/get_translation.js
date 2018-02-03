@@ -4,8 +4,7 @@ function setupTranslations() {
     for (var i = 0; i < words.length; i++) {
         words[i].addEventListener('click', function (event) {
             var word = event.target.innerText;
-            // commented out while writing and testing display code.
-             defineWord(word);
+            defineWord(word);
         });
     }
 

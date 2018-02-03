@@ -10,21 +10,19 @@
         <div class="row">
             <div class="col-md-9">
                 <h1>{{ article.title }}</h1>
-                <p><b><a href="{{ article.url }}">{{ article.source }}</a> </b></p>
+                <p><b><a href="{{ article.url }}">{{ article.authors[1] }}</a> </b></p>
                 <article>
-                    {% for paragraph in article.a_list %}
-                        <p>
-                            {% for is_word, word in paragraph %}
-                                {% if is_word %}
-                                    <span class="word">
-                                        {{ word }}
-                                    </span>
-                                {% else %}
-                                    {{ word }}
-                                {% endif %}
-                            {% endfor %}
-                        </p>
+                    <p>
+                    {% for token in article.article_model %}
+                        {% if token.pos_ not in ["PUNCT","SPACE"] %}
+                        <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}">{{ token.text }}</span>
+                        {% elif token.pos_ == "SPACE" %}
+                        </p> <p>
+                        {% else %}
+                            {{ token.text }}
+                        {% endif %}
                     {% endfor %}
+                        </p>
                 </article>
             </div>
             <div id="dict-entries" class="col-md-3">

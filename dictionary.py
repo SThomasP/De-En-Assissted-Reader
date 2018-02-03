@@ -93,7 +93,7 @@ class Dictionary:
                 sorted[0]['person'] = 'third'
                 sorted[1]['person'] = 'second'
 
-        if 'degree' in sorted[0].keys() and len(sorted) >= 1:
+        if 'degree' in sorted[0].keys() and len(sorted) > 1:
             if sorted[0]['degree'] == 'positive' and sorted[1]['degree'] == 'comparative':
                 sorted[0]['degree'] = 'comparative'
                 sorted[1]['degree'] = 'positive'
