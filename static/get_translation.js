@@ -1,39 +1,16 @@
-
-function setupTranslations() {
-    var words = document.getElementsByClassName('word');
-    for (var i = 0; i < words.length; i++) {
-        words[i].addEventListener('click', function (event) {
-            var word = event.target.innerText;
-            defineWord(word);
-        });
-    }
-
-    function defineWord(word) {
-
-        var httpRequest = new XMLHttpRequest();
-        if (!httpRequest) {
-            alert('Cannot create an XMLHTTP instance');
-            return false;
+$('.word').on('click', function (event) {
+    var e = event.target;
+    var data = e.dataset;
+    data.word = e.textContent;
+    $.ajax({
+        url: "/dict",
+        type: 'POST',
+        data: data,
+        success: function (result) {
+            popupEntry(result);
         }
-
-        httpRequest.onreadystatechange = function () {
-
-            if (httpRequest.readyState === XMLHttpRequest.DONE) {
-                if (httpRequest.status === 200) {
-                    var response = httpRequest.responseText;
-                    popupEntry(response);
-                }
-                else {
-                    alert('Not in dictionary');
-                }
-            }
-        };
-        httpRequest.open('GET', '/dict/html/' + word);
-        httpRequest.send();
-
-
-    }
-}
+    });
+});
 
 function removeEntry(event) {
     var entryToDelete = event.target.parentNode.parentNode;
@@ -44,12 +21,10 @@ function removeEntry(event) {
 
 function popupEntry(entry) {
     var entryList = document.getElementById("dict-entries");
-    entryList.insertAdjacentHTML('beforeend',entry);
+    entryList.insertAdjacentHTML('beforeend', entry);
 
 }
 
-
-setupTranslations();
 
 
 

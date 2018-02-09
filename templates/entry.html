@@ -1,13 +1,20 @@
 <div class="entry-outer {{ entry.css_cat }}">
-    <h3 class="dict-header">{{ entry.de }}
-        <span class="dict-category">{{ "{"+entry.category+"}" }}</span>
+    <h3 class="dict-header">{{ entry.word }}
+        <span class="dict-category">{{ "{"+entry.pos+"}" }}</span>
         <i class="fa fa-times dict-close-button" aria-hidden="true" onclick="removeEntry(event);"></i>
     </h3>
-
     <div class="entry-inner">
-        <p><b>{{ entry.grammar_string|safe  }}</b></p>
+        <p><b>root: {{ entry.root }}</b></p>
+        <p>{{ entry.grammar_explanation }}</p>
         {% if entry.found %}
-        <p>translations: <i>{{ entry.en_string }}</i></p>
+            <ul>
+            {% for feature in entry.grammar_features %}
+            <li><p><i>{{ feature }}</i></p></li>
+            {% endfor %}
+            </ul>
+            <p>translations: <i>{{ entry.english }}</i></p>
+        {% else %}
+            <p>{{ entry.english }}</p>
         {% endif %}
     </div>
 </div>

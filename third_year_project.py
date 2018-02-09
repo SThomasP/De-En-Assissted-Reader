@@ -1,12 +1,11 @@
 from flask import Flask, render_template, request
-from dictionary import Dictionary
+from dictionary import DictEntry
 from reader import ReadingAssistant
 import os
 
-dict_config = {'app_id': os.environ.get('APP_ID'), 'app_key': os.environ.get('APP_KEY')}
+
 
 app = Flask(__name__)
-dictionary = Dictionary(dict_config)
 
 '''
 @app.route('/dict/json/<word>')
@@ -16,9 +15,12 @@ def json_lookup(word):
 '''
 
 
-@app.route('/dict/html/<word>')
-def html_lookup(word):
-    dict_entry = dictionary.lookup_html(word)
+@app.route('/dict', methods=['POST'])
+def html_lookup():
+    word = request.form['word']
+    lemma = request.form['lemma']
+    tag = request.form['tag']
+    dict_entry = DictEntry(word, lemma, tag)
     return render_template("entry.html", entry=dict_entry)
 
 

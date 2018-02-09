@@ -19,7 +19,7 @@
                         {% elif token.pos_ == "SPACE" %}
                         </p> <p>
                         {% else %}
-                            {{ token.text }}
+                            {{ token.text.strip() }}
                         {% endif %}
                     {% endfor %}
                         </p>

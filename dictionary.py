@@ -1,63 +1,59 @@
 import json
 import requests
+import spacy
+import os
 
 OD_TRANSLATE = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/de/{word}/translations=en'
-OD_LEMMATRON = 'https://od-api.oxforddictionaries.com:443/api/v1/inflections/de/{word}'
+
+POS_DICT = {'Adjective': ['ADJA', 'ADJD'],
+            'Preposition': ['APPO', 'APPR', 'APPRART', 'APZR'],
+            'Adverb': ['ADV', 'PAV', 'PROAV', 'PWAV'],
+            'Auxiliary Verb': ['VAFIN', 'VAIMP', 'VAINF', 'VAPP'],
+            'Conjugation': ['KOKOM', 'KON', 'KOUI', 'KOUS'],
+            'Determiner': ['ART', 'PDAT', 'PIAT', 'PIDAT', 'PPOSAT', 'PRELAT', 'PWAT'],
+            'Interjection': ['ITJ'],
+            'Noun': ['NN'],
+            'Numeral': ['CARD'],
+            'Particle': ['PTKA', 'PTKANT', 'PTKNEG', 'PTKVZ', 'PTKZU'],
+            'Pronoun': ['PDS', 'PIS', 'PPER', 'PPOSS', 'PRELS', 'PRF', 'PWS'],
+            'Proper Noun': ['NE', 'NNE'],
+            'Other': ['FM', 'TRUNC', 'XY'],
+            'Verb': ['VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP', 'VVINF', 'VVIZU', 'VVPP']}
+
+TAG_DICT = {}
+
+for pos in POS_DICT:
+    for tag in POS_DICT[pos]:
+        TAG_DICT[tag] = pos
 
 
 class Dictionary:
     def __init__(self, config_vars):
         self._headers = config_vars
 
-    def lookup_json(self, word):
-        entry = {'de': word, 'en': [], 'root': '', 'category': '', 'grammar': []}
-        in_dict, entry = self._lemmatron(entry)
-        if in_dict:
-            en_found, entry = self._lookup_online(entry)
-            if en_found:
-                return json.dumps(entry, ensure_ascii=False), 200
-            else:
-                return json.dumps(entry, ensure_ascii=False), 404
-        else:
-            return json.dumps(entry, ensure_ascii=False), 404
-
-    def _lemmatron(self, entry):
-        word = entry['de'].lower()
-        r = requests.get(OD_LEMMATRON.format(word=word), headers=self._headers)
-        if r.status_code == 200:
-            r_json = r.json()['results']
-            entry['category'] = r_json[0]['lexicalEntries'][0]['lexicalCategory'].lower()
-            entry['grammar'] = self.sort_grammar(r_json[0]['lexicalEntries'][0]['grammaticalFeatures'])
-            if entry['category'] == 'adjective' and entry['grammar'][0]['degree'] == "superlative":
-                entry['root'] = r_json[0]['lexicalEntries'][0]['inflectionOf'][1]['text']
-            else:
-                entry['root'] = r_json[0]['lexicalEntries'][0]['inflectionOf'][0]['text']
-            return True, entry
-        else:
-            entry['category'] = "unknown"
-            return False, entry
-
-    def _lookup_online(self, entry):
-        word = entry['root']
-        cat = entry['category']
+    def lookup(self, word, pos):
         r = requests.get(OD_TRANSLATE.format(word=word), headers=self._headers)
         if r.status_code == 200:
             r_json = r.json()['results']
             for lexEntry in r_json[0]['lexicalEntries']:
-                if lexEntry['lexicalCategory'].lower() == cat:
-                    entry['en'] = self.sort_english(lexEntry['entries'])
-                    if len(entry['en']) != 0:
-                        return True, entry
-            return False, entry
+                if lexEntry['lexicalCategory'].lower() == pos.lower():
+                    translations = self.sort_english(lexEntry['entries'])
+                    grammar = self.sort_grammar(lexEntry['entries'])
+                    if len(translations) != 0:
+                        return True, translations, grammar
+            return False, [], []
         else:
-            return False, entry
-
-    def lookup_html(self, word):
-        entry_json, status_code = self.lookup_json(word)
-        return DictEntry(json.loads(entry_json), status_code)
+            return False, [], []
 
     @staticmethod
-    def sort_grammar(gram_fe):
+    def sort_grammar(entries):
+
+        # grab all the grammatical features
+        gram_fe = []
+        for entry in entries:
+            if 'grammaticalFeatures' in entry.keys():
+                gram_fe = gram_fe + entry['grammaticalFeatures']
+
         counter = {}
         # count the occurrences of each grammatical type
         for feature in gram_fe:
@@ -67,6 +63,8 @@ class Dictionary:
             else:
                 counter[g_type] = 1
         # determine the maximum
+        if counter == {}:
+            return []
         maximum = max(counter, key=(lambda key: counter[key]))
         # create the empty dictionaries
         sorted = [{} for _ in range(counter[maximum])]
@@ -114,23 +112,38 @@ class Dictionary:
         return en
 
 
+dict_config = {'app_id': os.environ.get('APP_ID'), 'app_key': os.environ.get('APP_KEY')}
+
+dictionary = Dictionary(dict_config)
+
+
 class DictEntry:
-    def __init__(self, entry_json, status_code):
-        self._json = entry_json
-        self.category = entry_json['category']
-        if self.category in ['noun', 'verb', 'adjective', 'unknown']:
-            self.css_cat = self.category
+    def __init__(self, word, lemma, tag):
+        self.word = word
+        self.root = lemma
+        self.tag = tag
+        self.pos = TAG_DICT[tag]
+        if self.pos in ['Noun', 'Verb', 'Adjective', 'Unknown']:
+            self.css_cat = self.pos.lower()
         else:
             self.css_cat = 'other'
-        self.de = entry_json['de']
-        if status_code == 200:
-            self.found = True
-            self.root = entry_json['root']
-            self.grammar_string = self.gen_grammar_string(entry_json['category'], entry_json['root'], entry_json['grammar'])
-            self.en_string = self.gen_english_string(entry_json['en'])
+
+        if self.pos not in ['Proper Noun', 'Other', 'Numeral']:
+            self.found, translation, grammar = dictionary.lookup(lemma, self.pos)
+            if self.found:
+                self.english = self.gen_english_string(translation)
+                self.grammar_features = self.list_features(grammar)
+            else:
+                self.english = 'No translation found'
+                self.grammar_features = []
+
         else:
             self.found = False
-            self.grammar_string = "Unable to find {} in dictionary".format(self.de)
+            self.english = 'Not translatable'
+            self.grammar_features = []
+        self.grammar_explanation = spacy.explain(tag)
+
+
 
     @staticmethod
     def gen_english_string(english):
@@ -140,54 +153,14 @@ class DictEntry:
         en_string = en_string[2:len(en_string)]
         return en_string
 
-    @staticmethod
-    def gen_grammar_string(category, root, grammar):
-        if category == 'noun':
-            return DictEntry.gen_noun_string(grammar[0], root)
-        if category == 'verb':
-            return DictEntry.gen_verb_string(grammar, root)
-        if category == 'adjective':
-            return DictEntry.gen_adjective_string(grammar[0], root)
-        else:
-            return DictEntry.gen_others(grammar[0], root)
 
     @staticmethod
-    def gen_others(grammar, root):
-        grammar_string = ''
-        for feature in grammar.keys():
-            grammar_string = grammar_string + '{}: {}, '.format(feature.capitalize(), grammar[feature])
-        grammar_string = grammar_string + 'Root: <i>{}</i>.'.format(root)
-        return grammar_string
-
-    @staticmethod
-    def gen_adjective_string(grammar, root):
-        if grammar['degree'] == 'positive':
-            return "Positive form."
-        else:
-            grammar_string = '{} form of <i>{}</i>.'.format(grammar['degree'], root)
-            return grammar_string.capitalize()
-
-    @staticmethod
-    def gen_noun_string(grammar, root):
-        if grammar['number'] == 'singular':
-            return "Singular, {}".format(grammar['gender'].lower())
-        else:
-            return "Plural form of: <i>{}</i>".format(root)
-
-    @staticmethod
-    def gen_verb_string(grammar, root):
-        if grammar[0]['tense'] == 'present':
+    def list_features(grammar):
+        grammar_list = []
+        for instance in grammar:
             grammar_string = ''
-            for g_form in grammar:
-                grammar_string = grammar_string + ', {} person {}'.format(g_form['person'], g_form['number'])
-            grammar_string = grammar_string[2:len(grammar_string)] + ' form of <i>{}</i>.'.format(root)
-            return grammar_string.capitalize()
-        elif grammar[0]['tense'] == 'past' and 'person' not in grammar[0].keys():
-            grammar_string = "Perfect form of <i>{}</i>.".format(root)
-            return grammar_string
-        else:
-            grammar_string = 'Past tense; '
-            for g_form in grammar:
-                grammar_string = grammar_string + '{} person {}, '.format(g_form['person'], g_form['number'])
-            grammar_string = grammar_string[0:len(grammar_string) - 2] + ' form of <i>{}</i>.'.format(root)
-            return grammar_string.capitalize()
+            for feature in instance.keys():
+                grammar_string = grammar_string + '{}: {}, '.format(feature.capitalize(), instance[feature])
+            grammar_string = grammar_string[:-2:]
+            grammar_list.append(grammar_string)
+        return grammar_list
