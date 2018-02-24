@@ -1,18 +1,11 @@
 from flask import Flask, render_template, request
 from dictionary import DictEntry
 from reader import ReadingAssistant
-import os
 
+CATS = ['Business', 'Entertainment', 'Germany', 'Health',  'Sport', 'Technology', 'World']
 
 
 app = Flask(__name__)
-
-'''
-@app.route('/dict/json/<word>')
-def json_lookup(word):
-    entry = dictionary.lookup_json(word)
-    return entry
-'''
 
 
 @app.route('/dict', methods=['POST'])
@@ -33,7 +26,7 @@ def read_article():
 
 @app.route('/')
 def article_entry():
-    return render_template('home.html')
+    return render_template('home.html', categories=CATS)
 
 
 if __name__ == '__main__':

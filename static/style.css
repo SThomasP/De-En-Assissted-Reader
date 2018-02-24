@@ -8,3 +8,15 @@
 main {
     text-align: center;
 }
+
+textarea{
+    width: 5em;
+    height: 5em;
+}
+
+.form-check-label{
+    text-align: left;
+    padding-left: 0.5rem;
+    padding-right: 1.5rem;
+}
+
