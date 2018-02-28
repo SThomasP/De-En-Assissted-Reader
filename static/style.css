@@ -9,6 +9,10 @@ main {
     text-align: center;
 }
 
+li {
+    margin-bottom: .5rem;
+}
+
 textarea{
     width: 5em;
     height: 5em;

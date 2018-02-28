@@ -5,11 +5,13 @@
         <div class="row">
             <div class="col-md-9">
                 <h1>{{ category.capitalize() }} articles in German</h1>
+                <ul>
                 {% for article in articles %}
-                    <div class="article">
-                        <a href="/read/{{ category }}/{{ article[0] }}"><h3>{{ article[1].title }}</h3></a>
-                    </div>
+                    <li>
+                        <a href="/read/{{ category }}/{{ article[0] }}">{{ article[1].title }}</a>
+                    </li>
                 {% endfor %}
+                </ul>
             </div>
         </div>
     </div>

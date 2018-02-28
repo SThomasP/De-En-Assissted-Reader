@@ -1,0 +1,42 @@
+{
+  "Sport": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/SPORTS.de_de/Sport?ned=de&hl=de&gl=DE",
+    "translation": "Sports",
+    "emoji": "🥌"
+  },
+  "Wissen & Technik": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/SCITECH.de_de/Wissen%20&amp;%20Technik?ned=de&hl=de&gl=DE",
+    "translation": "Science and Tech",
+    "emoji": "🔬"
+  },
+  "Unterhaltung": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/ENTERTAINMENT.de_de/Unterhaltung?ned=de&hl=de&gl=DE",
+    "translation": "Entertainment",
+    "emoji": "🎭"
+  },
+  "Wirtschaft": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/BUSINESS.de_de/Wirtschaft?ned=de&hl=de&gl=DE",
+    "translation": "Business",
+    "emoji": "💼"
+  },
+  "Gesundheit": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/HEALTH.de_de/Gesundheit?ned=de&hl=de&gl=DE",
+    "translation": "Health",
+    "emoji": "🍎"
+  },
+  "Deutschland": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/NATION.de_de/Deutschland?ned=de&hl=de&gl=DE",
+    "translation": "Germany",
+    "emoji": "🇩🇪"
+  },
+  "International": {
+    "url": "https://news.google.com/news/rss/headlines/section/topic/WORLD.de_de/International?ned=de&gl=DE&hl=de",
+    "translation": "World",
+    "emoji": "🌍"
+  },
+  "Alle": {
+    "url": "https://news.google.com/news/rss?ned=de&gl=DE&hl=de",
+    "translation": "All",
+    "emoji": "📰"
+  }
+}

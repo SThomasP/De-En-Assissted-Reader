@@ -12,16 +12,12 @@
                         <br>
                         <h5>Select a Preferred Category of Articles: </h5>
                         <form action="/find" id="submitURL" method="post" autocomplete="off">
-                         <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="cat-selection" id="cat-all" value="ALL">
-                                    <label class="form-check-label" for="cat-all">All</label>
-                                </div>
-                            {% for category in categories %}
+                            {% for category in cat_list %}
                                 <div class="form-check form-check-inline">
                                     <input class="form-check-input" type="radio" name="cat-selection"
-                                           id="cat-{{ category }}" value="{{ category }}">
+                                           id="cat-{{ category }}" value="{{ category }}" required>
                                     <label class="form-check-label"
-                                           for="cat-{{ category }}">{{ category.capitalize() }}</label>
+                                           for="cat-{{ category }}">{{ category }} {{ categories[category]['emoji'] }}</label>
                                 </div>
                             {% endfor %}
                             <br>

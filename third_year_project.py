@@ -18,7 +18,7 @@ def html_lookup():
 
 @app.route('/read/<category>/<article_id>')
 def read_article(category, article_id):
-    article = news.get_articles(category.lower(), article_id.lower())
+    article = news.get_articles(category, article_id.lower())
     if not article.built:
         article.build()
     return render_template('article.html', article=article)
@@ -35,10 +35,9 @@ def find_articles():
 
 @app.route('/')
 def article_entry():
-    cats = list(CAT_MAP.keys())
-    cats.remove('all')
-    cats.sort()
-    return render_template('home.html', categories=cats)
+    cat_list = list(CAT_MAP.keys())
+    cat_list.sort()
+    return render_template('home.html', categories=CAT_MAP, cat_list=cat_list)
 
 
 if __name__ == '__main__':

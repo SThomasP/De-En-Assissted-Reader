@@ -4,6 +4,7 @@ import spacy
 import os
 
 OD_TRANSLATE = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/de/{word}/translations=en'
+OD_LEMMA = 'https://od-api.oxforddictionaries.com:443/api/v1/inflections/de/{word}'
 
 POS_DICT = {'Adjective': ['ADJA', 'ADJD'],
             'Preposition': ['APPO', 'APPR', 'APPRART', 'APZR'],
@@ -31,29 +32,29 @@ class Dictionary:
     def __init__(self, config_vars):
         self._headers = config_vars
 
-    def lookup(self, word, pos):
-        r = requests.get(OD_TRANSLATE.format(word=word), headers=self._headers)
+    def lookup(self, word, root, pos):
+        r = requests.get(OD_TRANSLATE.format(word=root), headers=self._headers)
         if r.status_code == 200:
             r_json = r.json()['results']
             for lexEntry in r_json[0]['lexicalEntries']:
                 if lexEntry['lexicalCategory'].lower() == pos.lower():
                     translations = self.sort_english(lexEntry['entries'])
-                    grammar = self.sort_grammar(lexEntry['entries'])
                     if len(translations) != 0:
+                        grammar = self.get_grammar(word, pos)
                         return True, translations, grammar
-            return False, [], []
-        else:
-            return False, [], []
+        return False, [], []
+
+    def get_grammar(self, word, pos):
+        r = requests.get(OD_LEMMA.format(word=word), headers=self._headers)
+        if r.status_code == 200:
+            r_json = r.json()['results']
+            for lexEntry in r_json[0]['lexicalEntries']:
+                if lexEntry['lexicalCategory'].lower() == pos.lower():
+                    return self.sort_grammar(lexEntry['grammaticalFeatures'])
+        return []
 
     @staticmethod
-    def sort_grammar(entries):
-
-        # grab all the grammatical features
-        gram_fe = []
-        for entry in entries:
-            if 'grammaticalFeatures' in entry.keys():
-                gram_fe = gram_fe + entry['grammaticalFeatures']
-
+    def sort_grammar(gram_fe):
         counter = {}
         # count the occurrences of each grammatical type
         for feature in gram_fe:
@@ -129,7 +130,7 @@ class DictEntry:
             self.css_cat = 'other'
 
         if self.pos not in ['Proper Noun', 'Other', 'Numeral']:
-            self.found, translation, grammar = dictionary.lookup(lemma, self.pos)
+            self.found, translation, grammar = dictionary.lookup(word, lemma, self.pos)
             if self.found:
                 self.english = self.gen_english_string(translation)
                 self.grammar_features = self.list_features(grammar)
@@ -164,3 +165,10 @@ class DictEntry:
             grammar_string = grammar_string[:-2:]
             grammar_list.append(grammar_string)
         return grammar_list
+
+
+if __name__ == '__main__':
+    trains = DictEntry("Züge", "Zug", "NN")
+    print(trains.grammar_features)
+    print(trains.english)
+    print("Done")

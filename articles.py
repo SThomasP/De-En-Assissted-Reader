@@ -3,17 +3,12 @@ import uuid
 from xml.etree import ElementTree
 from newspaper import Article as Parser
 import spacy
+import json
 
-CAT_MAP = {
-    'sport': 'https://news.google.com/news/rss/headlines/section/topic/SPORTS.de_de/Sport?ned=de&hl=de&gl=DE',
-    'technology': 'https://news.google.com/news/rss/headlines/section/topic/SCITECH.de_de/Wissen%20&amp;%20Technik?ned=de&hl=de&gl=DE',
-    'entertainment': 'https://news.google.com/news/rss/headlines/section/topic/ENTERTAINMENT.de_de/Unterhaltung?ned=de&hl=de&gl=DE',
-    'business': 'https://news.google.com/news/rss/headlines/section/topic/BUSINESS.de_de/Wirtschaft?ned=de&hl=de&gl=DE',
-    'health': 'https://news.google.com/news/rss/headlines/section/topic/HEALTH.de_de/Gesundheit?ned=de&hl=de&gl=DE',
-    'germany': 'https://news.google.com/news/rss/headlines/section/topic/NATION.de_de/Deutschland?ned=de&hl=de&gl=DE',
-    'world': 'https://news.google.com/news/rss/headlines/section/topic/WORLD.de_de/International?ned=de&gl=DE&hl=de',
-    'all': 'https://news.google.com/news/rss?ned=de&gl=DE&hl=de'
-}
+# Load the Categories from a json file
+
+with open("categories.json") as cat_file:
+    CAT_MAP = json.load(cat_file)
 
 
 class ArticleFinder:
@@ -24,7 +19,7 @@ class ArticleFinder:
             self.articles[cat] = {}
 
     def lookup(self, category):
-        r = requests.get(CAT_MAP[category])
+        r = requests.get(CAT_MAP[category]['url'])
         root = ElementTree.fromstring(r.text)
         for item in root.iter('item'):
             url = item.find('link').text
