@@ -168,7 +168,7 @@ class DictEntry:
 
 
 if __name__ == '__main__':
-    trains = DictEntry("Züge", "Zug", "NN")
+    trains = DictEntry("Zug", "Zug", "NN")
     print(trains.grammar_features)
     print(trains.english)
     print("Done")

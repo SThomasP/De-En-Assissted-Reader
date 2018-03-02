@@ -59,4 +59,4 @@ class Article:
 
 if __name__ == '__main__':
     news = ArticleFinder()
-    news.lookup('technology')
+    news.lookup('Wissen & Technik')
