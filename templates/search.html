@@ -1,14 +1,14 @@
 {% extends "main.html" %}
-{% block title %} {{ category.capitalize() }} articles in German {% endblock %}
+{% block title %} {{ category }} Artikel {% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
             <div class="col-md-9">
-                <h1>{{ category.capitalize() }} articles in German</h1>
+                <h1>{{ category }}</h1>
                 <ul>
                 {% for article in articles %}
                     <li>
-                        <a href="/read/{{ category }}/{{ article[0] }}">{{ article[1].title }}</a>
+                        <a href="/read/{{ article.id }}">{{ article.title }}</a>
                     </li>
                 {% endfor %}
                 </ul>

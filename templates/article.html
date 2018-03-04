@@ -15,7 +15,8 @@
                     <p>
                     {% for token in article.article_model %}
                         {% if token.pos_ not in ["PUNCT","SPACE"] %}
-                        <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}">{{ token.text }}</span>
+                            <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}"
+                                  data-pos="{{ token.pos_ }}">{{ token.text.strip() }}</span>
                         {% elif token.pos_ == "SPACE" %}
                         </p> <p>
                         {% else %}
