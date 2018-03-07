@@ -4,6 +4,7 @@ from xml.etree import ElementTree
 from newspaper import Article as Parser
 from newspaper import ArticleException
 import textacy
+import de_core_news_sm
 import json
 
 RANKS = {'Beginner': [2, 3, 4, 5, 6, 7], 'Intermediate': [4, 5, 6, 7, 8, 9], 'Advanced': [6, 7, 8, 9, 10, 11],
@@ -70,7 +71,7 @@ class ArticleFinder:
         return cat_articles[index]
 
 
-nlp = textacy.load_spacy('de')
+nlp = de_core_news_sm.load()
 
 
 # A wrapper for newspaper, with some additional formatting and data extraction.
