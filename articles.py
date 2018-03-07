@@ -2,10 +2,11 @@ import requests
 import uuid
 from xml.etree import ElementTree
 from newspaper import Article as Parser
-import spacy
+from newspaper import ArticleException
+import textacy
 import json
-from csv import DictReader, DictWriter
-from data import BAD_POS
+
+RANKS = {'B': [2,3,4,5,6,7], 'I': [4,5,6,7,8,9], 'A': [6,7,8,9,10,11], 'F': [8,9,10,11,12,13]}
 
 # Load the Categories from a json file
 
@@ -15,90 +16,91 @@ with open("categories.json") as cat_file:
 
 class ArticleFinder:
 
-    def __init__(self, fp):
+    def __init__(self):
         self.articles = {}
-        self.fp = fp
-        try:
-            with open(fp, 'r') as csvfile:
-                reader = DictReader(csvfile)
-                for row in reader:
-                    self.add_old_article(row)
-        except FileNotFoundError:
-            pass
+        for cat in CAT_MAP:
+            self.articles[cat] = []
 
 
-    def lookup(self, category):
+    @staticmethod
+    def classify(articles, level):
+        to_return = []
+        for a in articles:
+            a_rep = {'id': a.id, 'title': a.title}
+            read = a.readability
+            ranks = RANKS[level]
+            if read < ranks[0]:
+                a_rep['rating'] = 'SL'
+            elif read < ranks[1]:
+                a_rep['rating'] = 'L'
+            elif read < ranks[2]:
+                a_rep['rating'] = 'ZL'
+            elif read < ranks[3]:
+                a_rep['rating'] = 'M'
+            elif read < ranks[4]:
+                a_rep['rating'] = 'ZS'
+            elif read < ranks[5]:
+                a_rep['rating'] = 'S'
+            else:
+                a_rep['rating'] = 'SS'
+            to_return.append(a_rep)
+        return to_return
+
+    def lookup(self, category, user_level):
         r = requests.get(CAT_MAP[category]['url'])
-        a_list = []
         root = ElementTree.fromstring(r.text)
+        old_aritcles = [a.id for a in self.articles[category]]
         for item in root.iter('item'):
             url = item.find('link').text
             title = item.find('title').text
             aid = str(uuid.uuid5(uuid.NAMESPACE_URL, url))
-            article = Article(url, title, aid)
-            a_list.append(article)
-            if (aid not in self.articles) or (self.articles[aid] is None):
-                self.articles[aid] = article
-        self.save()
-        return a_list
+            if aid not in old_aritcles:
+                try:
+                    self.articles[category].append(Article(url, title, aid, category))
+                except ZeroDivisionError:
+                    print('Zero Divison Error')
+                except ArticleException:
+                    print('Article Exception')
+        return self.classify(self.articles[category], user_level)
 
-    def save(self):
-        with open(self.fp, 'w') as csvfile:
-            writer = DictWriter(csvfile, fieldnames=['article-id', 'url', 'title'])
-            writer.writeheader()
-            for article in self.articles:
-                url = self.articles[article].url
-                title = self.articles[article].title
-                writer.writerow({'article-id': article, 'url': url, 'title': title})
-
-    def add_old_article(self, article):
-        aid = article['article-id']
-        url = article['url']
-        title = article['title']
-        self.articles[aid] = Article(url, title, aid)
-
-    def get_article(self, aid):
-        return self.articles[aid]
-
-    def get_article_list(self):
-        return list(self.articles.keys())
-
-    def articles_to_csv(self, fp):
-        pass
+    def get_article(self, aid, cat):
+        cat_articles = self.articles[cat]
+        article_ids = [a.id for a in cat_articles]
+        index = article_ids.index(aid)
+        return cat_articles[index]
 
 
-nlp = spacy.load('de')
+nlp = textacy.load_spacy('de')
 
 
 # A wrapper for newspaper, with some additional formatting and data extraction.
 class Article:
 
-    def __init__(self, url, title, id):
+    def __init__(self, url, title, id, category):
         self.title = title
         self.url = url
         self.id = id
-        self.built = False
+        self.category = category
         self.article_model = None
         self.authors = None
+        self.readability = 0
+        self.build()
 
-    def build(self, dm):
-        if not self.built:
-            self.built = True
-            article = Parser(self.url, language='de')
-            article.download()
-            article.parse()
-            self.title = article.title
-            self.article_model = nlp(article.text)
-            self.authors = article.authors
-            self.analyse(dm)
+    def build(self):
+        article = Parser(self.url, language='de')
+        article.download()
+        article.parse()
+        self.title = article.title
+        self.article_model = nlp(article.text)
+        self.get_readability()
+        self.authors = article.authors
 
-    def analyse(self, dm):
-        if not self.built:
-            self.build()
-        for word in self.article_model:
-            if word.pos_ not in BAD_POS:
-                dm.log_article(self.id, word.text, word.lemma_)
+    def get_readability(self):
+        stats = textacy.TextStats(self.article_model)
+        # Winer Sachtextformel https://de.wikipedia.org/wiki/Lesbarkeitsindex#Wiener_Sachtextformel
+        self.readability = stats.wiener_sachtextformel
+
+
 
 if __name__ == '__main__':
     news = ArticleFinder()
-    article = news.lookup('Wissen & Technik')[0]

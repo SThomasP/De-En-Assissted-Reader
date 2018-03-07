@@ -10,16 +10,31 @@
                     <main>
                         <h1>German Article Reading Assistant</h1>
                         <br>
+
+
+                        <form action="/start" id="submitURL" method="post" autocomplete="off">
+                        <div class="border border-dark rounded">
+                            <h5>Select Your Experience Level: </h5>
+                            <label>
+                                <select class="form-control" name="level">
+                                    <option value="B">Beginner</option>
+                                    <option value="I">Intermediate</option>
+                                    <option value="A">Advanced</option>
+                                    <option value="F">Fluent</option>
+                                </select>
+                            </label>
+                        </div>
+                        <div class="border border-dark rounded">
                         <h5>Select a Preferred Category of Articles: </h5>
-                        <form action="/find" id="submitURL" method="post" autocomplete="off">
                             {% for category in cat_list %}
                                 <div class="form-check form-check-inline">
-                                    <input class="form-check-input" type="radio" name="cat-selection"
+                                    <input class="form-check-input" type="radio" name="cat"
                                            id="cat-{{ category }}" value="{{ category }}" required>
                                     <label class="form-check-label"
                                            for="cat-{{ category }}">{{ category }} {{ categories[category]['emoji'] }}</label>
                                 </div>
                             {% endfor %}
+                            </div>
                             <br>
                             <input type="submit" value="Find Articles" class="btn btn-dark">
                         </form>
