@@ -12,10 +12,11 @@ url = "https://pypi.python.org/simple"
 [packages]
 
 "newspaper3k" = "*"
-Flask = "*"
+flask = "*"
 textacy = "*"
 requests = "*"
 gunicorn = "*"
+"c0cf193" = {file = "https://github.com/explosion/spacy-models/releases/download/de_core_news_sm-2.0.0/de_core_news_sm-2.0.0.tar.gz"}
 
 
 [requires]
