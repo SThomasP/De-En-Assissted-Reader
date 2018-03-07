@@ -71,7 +71,7 @@ def find_articles():
         else:
             session['count'] = 1
     category = session['cat']
-    articles = news.lookup(category,session['level'])
+    articles = news.lookup(category, session['level'])
     return render_template('search.html', articles=articles, category=category)
 
 
