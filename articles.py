@@ -6,7 +6,8 @@ from newspaper import ArticleException
 import textacy
 import json
 
-RANKS = {'B': [2,3,4,5,6,7], 'I': [4,5,6,7,8,9], 'A': [6,7,8,9,10,11], 'F': [8,9,10,11,12,13]}
+RANKS = {'Beginner': [2, 3, 4, 5, 6, 7], 'Intermediate': [4, 5, 6, 7, 8, 9], 'Advanced': [6, 7, 8, 9, 10, 11],
+         'Near Fluent': [8, 9, 10, 11, 12, 13]}
 
 # Load the Categories from a json file
 
@@ -20,7 +21,6 @@ class ArticleFinder:
         self.articles = {}
         for cat in CAT_MAP:
             self.articles[cat] = []
-
 
     @staticmethod
     def classify(articles, level):
@@ -99,7 +99,6 @@ class Article:
         stats = textacy.TextStats(self.article_model)
         # Winer Sachtextformel https://de.wikipedia.org/wiki/Lesbarkeitsindex#Wiener_Sachtextformel
         self.readability = stats.wiener_sachtextformel
-
 
 
 if __name__ == '__main__':

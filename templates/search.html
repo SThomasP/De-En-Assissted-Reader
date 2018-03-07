@@ -1,9 +1,9 @@
 {% extends "main.html" %}
-{% block title %} {{ category }} Artikel {% endblock %}
+{% block title %} {{ category }} Articles {% endblock %}
 {% block body %}
     <div class="container">
         <div class="row">
-            <div class="col-md-9">
+            <div class="col-md-8">
                 <h1>{{ category }}</h1>
                 {% for article in articles %}
                     <a href="/read/{{ article['id'] }}">
@@ -13,7 +13,7 @@
                     </a>
                 {% endfor %}
             </div>
-            <div class="col-md-3">
+            <div class="col-md-4">
               <h3>Difficulty Levels:</h3>
                 <p> We seperate the articles into 7 difficulty levels based on your experience with German. These difficulty levels are:</p>
                 <ul>
