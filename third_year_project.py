@@ -54,6 +54,7 @@ def read_article(article_id):
 def setup_session():
     session['cat'] = request.form['cat']
     session['level'] = request.form['level']
+    session['count'] = 0
     session['user_id'] = uuid.uuid4()
     app.logger.info("{user} is at {level} level, reading {category} articles.".format(user=session['user_id'], level=session['level'], category=session['cat']))
     return redirect('/find')
@@ -64,12 +65,9 @@ def find_articles():
     if 'article_id' in session:
         aid = session.pop('article_id')
         app.logger.info("{user} has stopped reading {article}".format(user=session['user_id'], article=aid))
-        if 'read' in session:
-            session['count'] += 1
-            if session['count'] == 3:
-                return redirect('/finish')
-        else:
-            session['count'] = 1
+        session['count'] += 1
+        if session['count'] == 3:
+            return redirect('/finish')
     category = session['cat']
     articles = news.lookup(category, session['level'])
     return render_template('search.html', articles=articles, category=category)
