@@ -10,31 +10,34 @@
         <div class="row">
             <div class="col-md-1">
                 <a href="/find"><h1><i class="fa fa-chevron-left"></i></h1>
-                Back</a>
+                    Back</a>
             </div>
             <div class="col-md-8">
                 <h1>{{ article.title }}</h1>
                 <p><b><a href="{{ article.url }}">{{ article.authors[1] }}</a> </b></p>
                 <article>
                     <p>
-                    {% for token in article.article_model %}
-                        {% if token.pos_ not in ["PUNCT","SPACE"] %}
-                            <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}"
-                                  data-pos="{{ token.pos_ }}">{{ token.text.strip() }}</span>
-                        {% elif token.pos_ == "SPACE" %}
-                        </p><p>
-                        {% else %}
-                            {{ token.text.strip() }}
-                        {% endif %}
-                    {% endfor %}
+                        {% for token in article.article_model %}
+                            {% if token.pos_ not in ["PUNCT","SPACE"] %}
+                                <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}"
+                                      data-pos="{{ token.pos_ }}">{{ token.text.strip() }}</span>
+                            {% elif token.pos_ == "SPACE" %}
+                                </p><p>
+                            {% else %}
+                                {{ token.text.strip() }}
+                            {% endif %}
+                        {% endfor %}
                         </p>
                 </article>
             </div>
             <div id="dict-entries" class="col-md-3">
-
+                <div class="entry-outer">
+                        <h3><i class="fa fa-times dict-close-button" aria-hidden="true" onclick="removeEntry(event);"></i></h3>
+                        <h5>Click on words in the article to see translations and grammatical information.</h5>
+                </div>
             </div>
         </div>
 
-    <script src="{{ url_for('static', filename="get_translation.js") }}"></script>
+        <script src="{{ url_for('static', filename="get_translation.js") }}"></script>
     </div>
 {% endblock %}

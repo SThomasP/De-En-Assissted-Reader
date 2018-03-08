@@ -46,12 +46,13 @@ def read_article(article_id):
     session['article_id'] = article_id
     article = news.get_article(article_id, session['cat'])
     response = make_response(render_template('article.html', article=article))
-    app.logger.info("{user} is reading article {count}  ({article}) which has a score of {readability}.".format(user=session['user_id'], article=article.id, count=session['count'], readability=article.readability))
+    app.logger.info("{user} is reading article {count}  ({article}) which has a score of {readability}.".format(user=session['user_id'], article=article.id, count=session['count'] +1, readability=article.readability))
     return response
 
 
 @app.route('/start', methods=['POST'])
 def setup_session():
+    session.clear()
     session['cat'] = request.form['cat']
     session['level'] = request.form['level']
     session['count'] = 0

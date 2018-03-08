@@ -33,6 +33,11 @@
 
 .dict-close-button{
     float: right;
+    cursor: pointer;
+}
+
+.word{
+    cursor: pointer;
 }
 
 .dict-category{
