@@ -1,7 +1,7 @@
 %% ----------------------------------------------------------------
 %% Progress.tex
 %% ---------------------------------------------------------------- 
-\documentclass{ecsprogress}  
+\documentclass{ecsreport}  
 \usepackage{libertine}
 \usepackage{rotating}
 \usepackage[ngerman,english]{babel} % Use the progress Style
@@ -29,24 +29,22 @@
 \examiner   {Prof. Lie-Liang Yang}
 \maketitle
 \begin{abstract}
-Intermediate level German learners often struggle with the discovery and reading of naturally written German language article. This project details the structure of an application that can be used to assist them. It examines if glosses are effective and the most effective methods of implementation, and then proceeds to document the process by which such a gloss is developed, both planning and implementation, detailing translation lookup and article presentation. It then plans out future work that will need to be done for the project to reach completion, the implementation of a recommender system and the testing of the application. 
+	
 \end{abstract}
 \tableofcontents
 \listoffigures
 \listoftables
 \lstlistoflistings
-\listofsymbols{ll}{L1 & The learner's native language \\
-				   L2 & The language the learner's learning}
 \mainmatter
 %% ----------------------------------------------------------------
 \include{Chapters/Introduction}
+\include{Chapters/ProjectPlan}
 \include{Chapters/BackgroundReading}
-\include{Chapters/ProposedDesign}
-\include{Chapters/WorkDoneSoFar}
-\include{Chapters/WorkToBeDone}
-\include{Appendices/Gannt}
-\appendix
-\include{Appendices/ApplicationCode}
+\include{Chapters/ApplicationDesign}
+\include{Chapters/ApplicationLogic}
+\include{Chapters/UserTesting}
+%\appendix
+%\include{Appendices/ApplicationCode}
 
 \backmatter
 %\bibliographystyle{ecs}

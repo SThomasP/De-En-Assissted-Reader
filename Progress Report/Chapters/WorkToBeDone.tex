@@ -2,8 +2,27 @@
 
 Sprints four and five are still to be done before the final report, in addition to user testing and research into recommender systems.
 
-\section{Sprint Four - Advance Parsing \& Analysis}
+\section{Sprint Four - Recommender Systems}
 
-\section{Recommender Systems - Sprint Five and Research}
+The recommender system of the application will suggest articles based on in-putted categories, recently published articles, and previous read articles. 
 
+In order to understand how best to build a recommender system, reading will have to be done into which recommender systems are effective in finding relevant articles and what data these systems require. Once this reading has been done, the development of the systems to collect and store the required data will done, followed by the development of the recommender system itself.
+
+Once the system has been built, it will be testing by inputting categories, and then seeing if the articles being returned are indeed relevant to those categories. 
+
+\section{Sprint Five - Advanced Parsing }
+
+The lookup method as of sprint three fails to successfully identify the types of words being used and also fails with longer compound words. The two parts of this sprint are to fix those two problems.
+
+The first is to implement a parts of speech parser on the article, allowing the program to identify how the word is being used in the sentence, and find the dictionary entry with the correct lexical category or tense.
+
+The second is that if a direct translation of a compound word is not in the dictionary, the application should attempt to break the compound word into its component parts and then provide a translation of each individual part. 
+
+This sprint will then be tested by using the lookup tool to test words in less common situations and longer compound words.
 \section{User Testing}
+
+User testing of the application is the most vital thing to be done, but first it will require approval from the ethics committee. The plan is to request ethics approval during the first week of the winter holidays, which will hopefully result in approval by a week after the exams period. 
+
+Once ethical clearance has been given, the application will be tested with various intermediate level German learners, They will be asked to use application to find articles of interest and then read these articles with the gloss. They will then be asked to fill out a survey, about whether or not they found the application improved their reading comprehension and vocabulary size, if they would continue to use the application. Whether or not they found the articles recommended interesting. 
+
+The data from this survey will then be aggregated and analysed to see if the project was successful in its goals. 

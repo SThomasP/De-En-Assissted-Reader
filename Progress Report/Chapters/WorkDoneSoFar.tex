@@ -1,7 +1,7 @@
 \chapter{Work Done So Far}
 Sprints One, Two and Three have been completed as of the time of writing.
 
-\section{Sprint One - Dictionary Lookup}
+\section{Sprint One - Translation Lookup}
 The sprint began by looking into technologies to translate the word being clicked on. Possibilities considered were online translation services such as \textcite{googletranslate} and \textcite{bingtranslate}, raw datasets such as the \textcite{dictCC} and Dictionary APIs such as the \textcite{oxford} and the \textcite{collins}. 
 
 The technology that would be used in the project would have to:
@@ -18,7 +18,9 @@ The five technologies cited above were checked against these criteria and the re
 
 As \textcite{oxford} was the only technology to clear all four criteria, the decision was made to used it for development of the application, however other technologies were used in testing the resulting code.
 
-\textcite{oxford} is a REST API where two calls are required to get the desired information. The first, to the lemmatron, checks that the word is in the dictionary and provides a list of entries of unconjugated words, their lexical categories and grammar information. The second call is to lookup translations of this uncojugated word.
+\textcite{oxford} is a REST API where two calls are required to get the desired information. The first, to the lemmatron, checks that the word is in the dictionary and provides a list of entries of unconjugated words, their lexical categories and grammar information. The second call is to lookup translations of this uncojugated word, this is illustrated in figure \ref{fig:odsf}
+
+\input{Figures/OxfordSF}
 
 On the first call, the application takes the first entry provided by the response and extracts the root of the word along with the lexical category and the grammar of the conjugation. Then, on the second call, it compares lexical categories to ensure it's the correct word, before extracting English translations of the root. This information is then passed to a storage class.
 
@@ -32,9 +34,9 @@ A parsing library was used that returns the content of the article as a single s
 
 The code for this part of sprint two can be seen in listing \ref{app:parsing}
 
-The second part of this sprint was to enable for these parsed articles to be displayed. For this, a web application was written. This app displayed the parsed article on the left, with a margin on the right left for the gloss content. This view is shown in figure \ref{fig:article}. Each word extracted while parsing was wrapped in a span tag, allowing for easier identification by the AJAX.
+The second part of this sprint was to enable for these parsed articles to be displayed. For this, a web application was written. This app displayed the parsed article on the left, with a margin on the right left for the gloss content. This view is similar to the wireframe shown in figure \ref{fig:view3}. Each word extracted while parsing was wrapped in a span tag, allowing for easier identification by the AJAX.
 
-The code for this part of the sprint can be seen in listings \ref{app:flask} (web  app) and \ref{app:article} (article display template)
+The code for this part of the sprint can be seen in listings \ref{app:flask} (web app) and \ref{app:article} (article display template)
 
 The whole sprint was then tested by displaying some articles from the German website "Spiegel Online". The articles displayed nicely and the content of the text was correct, so the sprint passed the tests.
 

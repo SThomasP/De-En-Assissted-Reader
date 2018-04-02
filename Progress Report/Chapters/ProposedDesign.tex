@@ -1,5 +1,5 @@
-\chapter{Proposed Design}
-
+\chapter{Proposed Design \& Development}
+\section{Design}
 The project will be split into three views, the first, which will be similar to the wireframe in figure \ref{fig:view1} is a selection screen with a text area, where the user can select tags to search by inputting them.
 
 \input{Figures/view1}
@@ -16,7 +16,44 @@ from figure \ref{fig:view3} the user can select a word in the article, this acti
 
 \input{Figures/view4}
 
+A marginal gloss in with multiple L1 translations and grammatical information as marginal glosses are effective \cite{abuseileek2008} and relatively easy to develop for. Multiple translations are being used to prevent the occurrence of an incorrect translation. 
+
 The whole systems process is illustrated in figure \ref{fig:sf}.
 	
 \input{Figures/systemsFlow}
 
+\section{Development}
+
+The plan is to develop the application using agile development structures using five sprints. Agile development was chosen because it allows for feedback to received on the project at weekly supervisor meetings, it also means that the development can be adjusted based on new ideas presented during the feedback session.
+
+The five Sprints and their aims as as follows:
+\begin{enumerate}
+	\item \textbf{Translation Lookup}
+	
+	The aim of this sprint is to establish a valid method to retrieve single word translation and grammatical data.
+	
+	\item \textbf{Article Parsing \& Presentation}
+	
+	The aim of this sprint is develop a method for the parsing of articles and then to present them through a web browser
+	
+	\item \textbf{AJAX}
+	
+	The aim of this sprint is to develop the javscript code that will allow the gloss to display entries.
+	
+	\item \textbf{Recommender System}
+	
+	The aim of this sprint it to develop the recommender system that will suggest articles to the user. 
+	
+	\item \textbf{Advance Parsing}
+	
+	The aim of this sprint is to allow for advance parsing, such as parts of speech or the breaking up of German compound words into their component parts.
+\end{enumerate}
+
+These sprints were chosen as each of them represents a core development of a feature in the project. The order was chosen as it allows the project to reach minimum viable status as soon as possible (sprint 3). While leaving the most optional sprint until last.  
+
+\section{Testing}
+Preliminary testing will be done during and at the end of each sprint, this will allow the developer to test each part of the application, seeing if it works. Then the application as a whole will be tested. 
+
+Once the five sprints have been completed, the application will have to be user-test to make sure it performs effectively. Users will test the application by using it, then answering a questionnaire about the application and their experiences using it. 
+
+Splitting the testing into two main parts like this means that the testing of each indivual part will be completed in time for user testing, so the users will only ever been testing the complete application. Not performing user testing until the end of the project will mean that only one ethics approval will have to be submitted. 
