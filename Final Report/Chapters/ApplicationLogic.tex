@@ -1,11 +1,26 @@
 \chapter{Application Logic}
 
+\section{General Technologies and Frameworks}
+
+As it is a web application, HTML, CSS and JavaScript were used for the client side of the application, although this was augmented with both JQuery and Bootstrap to ease the development of the Javascript and the CSS respectively. 
+
+For the server side of the application, the code was written in python, using the Flask framework and its integrated technologies. Flask was used as it is easier to user then the alternative python frameworks and the developer has experience using it. python was also chosen for similar reasons and due to the fact that the developer likes it. The memory usage and speed of the various possible programming languages and frameworks was not considered. Ease of use and familiarity were the primary considerations. 
+
 \section{Article Discovery}
 
-For the article discovery portion of the application, a way was needed.
+For the article discovery portion of the application, the need was for a list of articles, from a variety of sources about a variety of topics. The solution that was found after some search on the internet, was Google News.
+
+Google News provides several lists of recent articles from different sources divided in different topics, additionally, each of these lists is provided in an RSS feed XML file, a format that allows the code to be written for both URL and title extraction with minimal effort, both on the parts of the developer and the machine life time.
+
+The categories provided by the Google News RSS feeds were usable, but overall they were fairly common news categories. On the plus side, these categories are recognisable, on the down side, these categories are not customisable, however, the categories were pre-selected, saving time on artificial category creation, the end user can just selected one of them. 
+
+There were alternatives to the Google News RSS feeds that were examined, primarily newsapi.org. However this was found to be lacking for two reasons. Primarily, this API would list content, where the primary means of communication was not text. Comics and other image based got added to the lists being provided by the API. As the parser and the gloss system relied on the content being text based and there was no easy way to distinguish being text based content and image based content. The other more minor reason that newsapi.org was disregarded was because it was more difficult to categorise the articles, whereas the Google News RSS feeds provided pre-created categories, to save time on both filtering out image-based content and the categorisation of articles, the decision was made to use the Google News RSS feeds. 
+
+The end result of this is an application that works as show in the systems flow diagram in figure, were the articles being listed in the article selection view are pulled from the Google News RSS feed that corresponds to the category selected by the end user.
 
 \section{Article Difficulty Rating}
 
 The difficulty rating of the article is calculated using two things, the article text as well as the user's experience level. The process takes a while, as the article must be downloaded and the content of the article extracted first. As this must be done with several articles. 
+
 
 \section{Gloss Creation}
