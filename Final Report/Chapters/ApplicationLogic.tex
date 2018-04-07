@@ -24,3 +24,30 @@ The difficulty rating of the article is calculated using two things, the article
 
 
 \section{Gloss Creation}
+
+\subsection{Translation Lookup}
+
+For the translation section of the gloss creation, various possibilities were considered, These included online translation services such as \textcite{googletranslate} and \textcite{bingtranslate}, raw datasets such as the \textcite{dictCC} and Dictionary APIs such as the \textcite{oxford} and the \textcite{collins}. 
+
+The technology that would be used in the project would have to:
+\begin{itemize}
+	\item Be able to translate single words from to English
+	\item Provide Lexical information of those words
+	\item Be allowed for the content to be hosted and provided through a web interface
+	\item Be available for less than \pounds150 total
+	\end{itemize}
+	
+	The five technologies cited above were checked against these criteria and the results are show in Table \ref{tbl:comp}
+	
+	\input{Tables/comparisonoftranslators}
+	
+	As \textcite{oxford} was the only technology to clear all four criteria, the decision was made to used it for development of the application, however other technologies were used in testing the resulting code.
+	
+	\textcite{oxford} is a REST API where two calls are required to get the desired information. The first, gets the translations of the root words, at the same time this is used to check if a word is the dictionary, the second call, which is made if a translation is found is to get the reasons why that particular mutation from the root occurred.  The process is illustrated in the systems flow diagram in figure \ref{fig:odsf}
+	
+	\input{Figures/OxfordSF}
+	
+	On the first call, the root word, as provided by SpaCy, had it's translations looked up. If one or more translation was discovered, the second call would be made, extracting the grammatical information about why the root was transformed into it's current form. Both this grammatical information and the tag explanation from SpaCy were used in the final gloss.
+	
+	Once this part of the application had been written, it was unit tested with a selection of random German words, the unconjugated word, translations and lexical information were compared to results provided by the other technologies and the developer's knowledge. The code passed testing as the results provided were accurate and contained the necessary grammatical information. 
+	
