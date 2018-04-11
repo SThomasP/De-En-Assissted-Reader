@@ -16,7 +16,7 @@ Another caveat that should also be added that most of the studies analysed in \t
 
 \subsection{Design Methods of Electronic Glosses}
 
-\textcite{roby1999} identifies three main parts of a gloss' design, its presentation, its taxonomy and its density. However, as density for this project's application is something determined by the leaner, background reading into design was limited to presentation and taxonomy. 
+\textcite{roby1999} identifies three main parts of a gloss' design, its presentation, its taxonomy and its density. However, as density, which is the amount of content in the gloss, is something determined by the user, background reading into design was limited to presentation and taxonomy. 
 
 \subsubsection{Gloss Presentation}
 
@@ -34,3 +34,19 @@ There is a large body of research that suggests that providing multimedia glosse
 
 
 \section{Article Difficulty Rating}
+
+The reading for this section of the application was harder to find, little has been written about the discovery and difficulty rating of texts for second language learners in general, or German learners in specific. 
+
+The easiest method of calculating the difficulty of an article seems to be a mathematical expression of it's readability, called a readability index. Perhaps the most famous of these being the Flesch Reading Ease (FRE) formula \autocite{flesch1948}. This formula is for America English, however similar formulae have been developed for German, two of these are highlighted below.
+
+The first formula for German is an adaptation of the FRE formula as proposed in \textcite{amstad1978}, this relies on much the same model as the original FRE formula, however takes into account the longer average word length in the German language, this formula is show in figure \ref{fig:fre} where  ASL is the average sentence length and ASW is the average syllables per word. This formula maps the readability of the text onto a range of 0 to 100, with 0 being easy and 100 being hard. 
+
+\input{Figures/FreFormula}
+
+The other readability index for German is the  Wiener Sachtextformel (WSTF) as proposed in \textcite{bamberger1984}, on version of this is as shown in figure \ref{fig:wst}. Where MS is the percentage of words with three or syllables, SL is the average sentence length, IW is the percentage of words with six or more characters and ES is the percentage of monosyllabic words. This formula maps the difficulty rating onto a range of 4 to 15, with the lower numbers being easier. This is done to reflect the German school year that is believed to be appropriate for that level of text.
+
+\input{Figures/WstfFormula}
+
+The two formulas are commonly used together when assessing the readability of texts, being used in a variety of studies, such as \textcite{rottensteiner2010} which uses them both to assess the readability of newly published textbooks. This publication also notes that these formulae only measure the linguistic complexity of the article, ignoring other factors, such as presentation, that influence how easy the article is to read. 
+
+In addition to the formulae listed above there are methods of determining a readability ranking through the use of machine learning. \textcite{hancke2012} which attempts to build a readability classification system from a corpus of articles. This paper looks a lot more in depth at a lot of features of the text. However, this model only performed 7.5\% better than the computational scores calculated from the traditional formula. Given the time constraints and the already complex nature of the project, it would not be worth the effort to implement such a model, as the tradition formulae such as WSTF and FRE perform well enough for the purposes of this project. 
