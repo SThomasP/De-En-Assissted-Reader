@@ -1,0 +1,21 @@
+\begin{lstlisting}[caption=Gloss Javascript, label=lst:gloss, breaklines=true]
+$('.word').on('click', function (event) {
+	var e = event.target;
+	var data = e.dataset;
+	data.word = e.textContent;
+	$.ajax({
+		url: "/dict",
+		type: 'POST',
+		data: data,
+		success: function (result) {
+			popupEntry(result);
+		}
+	});
+});
+
+function popupEntry(entry) {
+	var entryList = document.getElementById("dict-entries");
+	entryList.insertAdjacentHTML('beforeend', entry);
+}
+
+\end{lstlisting}

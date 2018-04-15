@@ -11,7 +11,7 @@
 %% This file is part of the ECSDocs class distribution
 %% 
 \NeedsTeXFormat{LaTeX2e}[1996/12/01]
-\ProvidesClass{ecsprogress}
+\ProvidesClass{ecsreport}
 [2003/25/04 v1.6
 LaTeX document class]
 \def\baseclass{book}

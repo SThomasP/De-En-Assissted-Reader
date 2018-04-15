@@ -34,10 +34,23 @@ The primary idea behind these ratings was that a user who was less experienced w
 
 More complex ideas for mapping were experimented with, including ones that used machine learning systems, however these ideas were eventually abandoned due to the fact that they were to complex to be implemented in the limited time available. 
 
+\section{Displaying the Article}
+
+Once the users has selected an article, they are then presented with the content of that article. The actual job of presenting this article was fairly easy as the was majority of this work (the extraction and parsing of the article's content) had already been done by \textit{newspaper} and \textit{SpaCy}.  \textit{SpaCy's} method of presenting the parsed article is as a series of tags, each representing a part of speech. This leaves very little difficulty in presenting the article, the tags are iterated through as if they were a list. Words are wrapped in span elements tags for later use, punctuation is skipped over and paragraph breaks end the current paragraph and start a new one. In addition these span tags have data attributes storing the parts of speech tags and root word. This results in a html document that appears similar to listing \ref{lst:html}.
+
+\input{Listings/ExampleTags}
+
+The html produced by this was functional, although there was a bug to do with the generation of excess whitespace, which was removed from listing \ref{lst:html} to make sure the code was readable. 
 
 \section{Gloss Creation}
 
+The client side method for creating the gloss is done through AJAX, the javascript for this can be seen in listing \ref{lst:gloss}.
 
+\input{Listing/GlossJavaScript}
+
+This code is simple, when one of the words is click, an AJAX event is fired. It requests the gloss item from the application, and upon return inserts the gloss item at the end of the marginal gloss.
+
+Upon recieve such an gloss request, the server side python code will then generate an return a pre-formatted gloss. This allowed for the client side code to be kept as simple as possible.
 
 \subsection{Translation Lookup}
 
