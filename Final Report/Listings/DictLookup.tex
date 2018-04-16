@@ -1,0 +1,27 @@
+\begin{lstlisting}[caption=Gloss Generation Code, label=lst:dict, breaklines=true, language=python]
+class DictEntry:
+    def __init__(self, word, lemma, tag):
+        self.word = word
+        self.root = lemma
+        self.tag = tag
+        self.pos = TAG_DICT[tag]
+        if self.pos in ['Noun', 'Verb', 'Adjective', 'Unknown']:
+            self.css_cat = self.pos.lower()
+        else:
+            self.css_cat = 'other'
+
+        if self.pos not in ['Proper Noun', 'Other', 'Numeral']:
+            self.found, translation, grammar = dictionary.lookup(word, lemma, self.pos)
+            if self.found:
+                self.english = self.gen_english_string(translation)
+                self.grammar_features = self.list_features(grammar)
+            else:
+                self.english = 'No translation found'
+                self.grammar_features = []
+
+        else:
+            self.found = False
+            self.english = 'Not translatable'
+            self.grammar_features = []
+        self.grammar_explanation = spacy.explain(tag)
+\end{lstlisting}

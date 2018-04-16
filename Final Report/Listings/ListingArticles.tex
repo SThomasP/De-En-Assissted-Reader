@@ -1,0 +1,18 @@
+\begin{lstlisting}[caption=Article Discovery Code, label=lst:disc, breaklines=true, language=python]
+    def lookup(self, category, user_level):
+        r = requests.get(CAT_MAP[category]['url'])
+        root = ElementTree.fromstring(r.text)
+        old_aritcles = [a.id for a in self.articles[category]]
+        for item in root.iter('item'):
+            url = item.find('link').text
+            title = item.find('title').text
+            aid = str(uuid.uuid5(uuid.NAMESPACE_URL, url))
+            if aid not in old_aritcles:
+                try:
+                    self.articles[category].append(Article(url, title, aid, category))
+                except ZeroDivisionError:
+                    print('Zero Divison Error')
+                except ArticleException:
+                    print('Article Exception')
+        return self.classify(self.articles[category], user_level)
+\end{lstlisting}

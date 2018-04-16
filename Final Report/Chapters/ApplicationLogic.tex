@@ -1,3 +1,4 @@
+%TC:envir lstlisting [] xall
 \chapter{Application Implementation}
 
 \section{General Technologies and Frameworks}
@@ -12,17 +13,20 @@ For the article discovery portion of the application, the need was for a list of
 
 \textit{Google News} provides several lists of recent articles from different sources divided in different topics, additionally, each of these lists is provided in an RSS feed XML file, a format that allows the code to be written for both URL and title extraction with minimal effort, both on the parts of the developer and the machine life time.
 
-The categories provided by the \textit{Google News} RSS feeds were usable, but overall they were fairly common news categories. On the plus side, these categories are recognisable, on the down side, these categories are not customisable, however, the categories were pre-selected, saving time on artificial category creation, the end user can just selected one of them. 
+The categories provided by the \textit{Google News} RSS feeds were usable, but overall they were fairly common news categories. On the plus side, these categories are recognisable, on the down side, these categories are not customisable, however, the categories were pre-selected, saving time on artificial category creation, the end user can just selected one of them. The code for obtaining the articles is shown in listing \ref{lst:disc}
+
+\input{Listings/ListingArticles}
+
+This code takes the category, and then gets the current state of the corresponding RSS feed. It then iterates through item tags in the RSS feed, extracting the title and URL of each tag. It then attempts to parse and rate the article for listing. Once every article has be parsed and rated, it returns a list for display. In addition, articles are stored and added to future lists so that the code doesn't have to reparse an article every time the list is generated.
 
 There were alternatives to the \textit{Google News} RSS feeds that were examined, primarily \textit{NewsAPI}. However this was found to be lacking for two reasons. Primarily, this API would list content, where the primary means of communication was not text. Comics and other image based got added to the lists being provided by the API. As the parser and the gloss system relied on the content being text based and there was no easy way to distinguish being text based content and image based content. The other more minor reason that \textit{NewsAPI} was disregarded was because it was more difficult to categorise the articles, whereas the \textit{Google News} RSS feeds provided pre-created categories, to save time on both filtering out image-based content and the categorisation of articles, the decision was made to use the \textit{Google News} RSS feeds. 
 
-The end result of this is an application is that the articles being listed in the article selection view are pulled from the Google News RSS feed that corresponds to the category selected by the end user.
 
 \section{Article Difficulty Rating}
 
 The difficulty rating of the article is calculated using two things, the article text as well as the user's experience level. The user's experience level is obtained from the form the user submitted at the start, while the article text needs to be extracted from the article web page and then analysed.
 
-To extract and then analyse the article, two technologies are used. The first is an article scraping python library called \textit{Newspaper}, the purpose of it is to extract the raw article text from the article web page, making the analysis of it easier. Analysis of the article text is then done through another python library called \textit{SpaCy}, which is a parts-of-speech tagging library, with some additional advanced features, pretty much all the analysis is performed when the article text is parsed into the library, meaning that library provides a bunch of information about the text.
+To extract and then analyse the article, two technologies are used. The first is an article scraping python library called \textit{Newspaper}, the purpose of it is to extract the raw article text from the article web page, making the analysis of it easier. Analysis of the article text is then done through another python library called \textit{SpaCy}, which is a parts-of-speech tagging library, while and add on for it, called \textit{Textacy} provides advanced features such as syllable counting. \textit{SpaCy} provides two  sets of parts of speech tags with different levels of precision. 
 
 Once the article text has been extracted and analysed, it's readability index needs to be calculated, this is done using the Erste Wiener Sachetextformel as described in \textcite{bamberger1984}. The WSTF formula was chosen over the FRE formula because the WSTF formula has a smaller output range. This smaller output range allowed for two things the first was easier mapping onto the user experience level as well as a better understanding of the approximate level of each individual number, as those number correspond directly with the German school years. 
 
@@ -36,21 +40,27 @@ More complex ideas for mapping were experimented with, including ones that used 
 
 \section{Displaying the Article}
 
-Once the users has selected an article, they are then presented with the content of that article. The actual job of presenting this article was fairly easy as the was majority of this work (the extraction and parsing of the article's content) had already been done by \textit{newspaper} and \textit{SpaCy}.  \textit{SpaCy's} method of presenting the parsed article is as a series of tags, each representing a part of speech. This leaves very little difficulty in presenting the article, the tags are iterated through as if they were a list. Words are wrapped in span elements tags for later use, punctuation is skipped over and paragraph breaks end the current paragraph and start a new one. In addition these span tags have data attributes storing the parts of speech tags and root word. This results in a html document that appears similar to listing \ref{lst:html}.
+Once the users has selected an article, they are then presented with the content of that article. The actual job of presenting this article was fairly easy as the was majority of this work (the extraction and parsing of the article's content) had already been done by \textit{newspaper} and \textit{SpaCy}.  \textit{SpaCy's} method of presenting the parsed article is as a series of tags, each representing a part of speech. This makes presenting the article easy, the tags are iterated through as if they were a list. Words are wrapped in span elements tags for later use, punctuation is skipped over and paragraph breaks end the current paragraph and start a new one. In addition these span tags have data attributes storing the parts of speech tags and root word. This results in a html document that appears similar to listing \ref{lst:html}.
 
 \input{Listings/ExampleTags}
 
-The html produced by this was functional, although there was a bug to do with the generation of excess whitespace, which was removed from listing \ref{lst:html} to make sure the code was readable. 
+The html produced by this was functional, although there was a bug to do with the generation of excess whitespace, which was removed from listing \ref{lst:html} so that the code was readable. 
 
 \section{Gloss Creation}
 
 The client side method for creating the gloss is done through AJAX, the javascript for this can be seen in listing \ref{lst:gloss}.
 
-\input{Listing/GlossJavaScript}
+\input{Listings/GlossJavaScript}
 
 This code is simple, when one of the words is click, an AJAX event is fired. It requests the gloss item from the application, and upon return inserts the gloss item at the end of the marginal gloss.
 
-Upon recieve such an gloss request, the server side python code will then generate an return a pre-formatted gloss. This allowed for the client side code to be kept as simple as possible.
+Upon receiving such an gloss request, the server side python code will then generate and return a pre-formatted gloss. This allowed for the client side code to be kept as simple as possible. The code for this is shown in listing \ref{lst:dict}
+
+\input{Listings/DictLookup}
+
+The code starts by assigning the word, root and fine part of speech tag to the class, the fine parts of speech tag is then used to lookup the coarse one, which is then saved in a format which is both human readable and how the \textit{Oxford Dictionaries API} classifies its lexical categories.  If the lexical category is one where a translation will not be found (Proper Nouns, Numerals, etc.). It does not bother performing either lookup. It then calls the dictionary object (defined outside of scope) and looks up the word and grammatical information. When this information is returned, it then proceeds to format it so it is human readable.
+
+The object where all this has be stored is then passed to the template engine. Where it is transformed into a HTML gloss item. This is then sent to the user as a response to the initial request, where the JavaScript shown earlier will insert it into the gloss. 
 
 \subsection{Translation Lookup}
 
@@ -74,5 +84,16 @@ As the \textit{Oxford Dictionaries API} was the only technology to clear all fou
 
 \input{Figures/OxfordSF}
 
-On the first call, the root word, as provided by \textit{SpaCy}, gets its translations looked up. If one or more translation is discovered, the second call gets made, extracting the grammatical information about why the root was transformed into it's current form. Both this grammatical information and the tag explanation from \textit{SpaCy} were used in the final gloss. A breakdown of where the various parts of the gloss are sourced from can be seen in figure 
+On the first call, the root word, as provided by \textit{SpaCy}, gets its translations looked up. If one or more translation is discovered, the second call gets made, extracting the grammatical information about why the root was transformed into it's current form.
 
+Several times throughout the grammatical feature generation and translation extraction, the results of \textit{Oxford Dictionaries API} had to be parsed in interesting ways. First of all was extracting the English translations of the words. When translations of a word are looked up using the API. It presents the results in various nested lists, first of all entries, which are all words with the same lexical category and spelling but with different meanings, then the senses or the various contexts that particular word can be used, then translation which are the valid translations of that particular word in that particular sense. As each of these are a valid translation for the word and the application has no method for distinguishing the context for that word, they should all be shown. In addition, there are exception where a word will not have any senses or a sense will not have any translations, so these have to be ignored. The code for this is in listing \ref{lst:eng}. 
+
+\input{Listings/English}
+
+More complex was how the API presented grammatical features. All grammatical features from all possible use cases are truncated into a list, so these needed to reassembled into the use cases, an attempt was made to do this and the code for this can be seen in listing \ref{lst:gramm}.
+
+\input{Listings/Grammar}
+
+The code starts by counting the occurrences of each type of grammatical feature, using the max to calculate the number of use cases there will be. Once it's done that, it iterates through the various features assigning the nth occurrence of each type to the nth use case. If there are more use cases than occurrences of that type of grammatical feature, the last occurrence is used for the remaining use cases. Finally, there are two sets of use use cases that were discovered to be wrong during development and therefore have code written to fix them. 
+
+With the translations and grammatical information extracted, the information can then be given to the gloss generation code processing. 

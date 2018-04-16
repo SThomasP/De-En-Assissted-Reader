@@ -1,0 +1,15 @@
+\begin{lstlisting}[caption=Translation Extraction Code, label=lst:eng, breaklines=true, language=python]
+@staticmethod
+def sort_english(entries):
+    en = []
+    for entry in entries:
+	    if 'senses' in entry.keys():
+		    senses = entry['senses']
+		    for sense in senses:
+			    if 'translations' in sense.keys():
+				    translations = sense['translations']
+				    for translation in translations:
+					    en.append(translation['text'])
+    return en
+
+\end{lstlisting}
