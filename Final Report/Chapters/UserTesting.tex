@@ -1,28 +1,66 @@
 \chapter{User Testing and Feedback}
 
-User testing was done once all six sprints have been completed, but the preparation process started a while before that, the plan was always to have users' test the application by finding and reading three articles, then go on to fill out a short feedback form on their experiences with it. The user's actions in the application would all be logged, in order provided a level of insight for the developer. 
+\section{Testing Methodology}
 
-\section{Testing Preparation}
+In order to carry out this testing, University of Southampton policy required that the testing had ethics approval from the ECS ethics committee, it was applied for and approved through the ergo system, with a submission ID of 40080, being classed as a category C research project. While getting this approval took longer than expected, it was approved in good time.
 
-In order to carry out this testing, University of Southampton policy required that the testing had ethics approval from the ECS ethics committee, it was applied for and approved through the ergo system, with a submission ID of 40080, being classed as a category C research project. While getting this approval took longer than the developer expected. It was approved in good time for when the testing was eventually done.
+The plan for testing was that the tester would test the application by using it to find and read three articles, they would then go on to fill out a short feedback form on their experiences with it. The survey asked the tester the following things. 
+\begin{itemize}
+	\item Whether or not the application helped them understand the articles.
+	
+	\item Whether or not the application helped them with words in they article that they did not know.
+	
+	\item Whether or not the articles were of a suitable difficulty level.
+	
+	\item Whether or not the translations were accurate.
+	
+	\item Whether or not the application was easy to use.
+	
+	\item Whether or not the tester liked the position of the gloss.
+	
+	\item Whether or not the tester would the application if available. 
+	
+	\item A comment box for any additional thoughts the tester may have. 
+\end{itemize}
 
-The application was modified slightly in order facilitate testing. The number of articles a user could read was limited to three, once they had read these three articles, they were given a link to the survey.
 
-\section{Testing Results and Feedback Given}
+In addition the testers use of the application was logged, so that their survey results could then be compared to various information they inputted when testing the application, allowing the building of a complete picture of the tester's experience with the application. 
 
-There were four people who tested the application, of the four, two rated themselves beginner, one intermediate and one advanced. This was a decent range of experience levels, although more intermediate and advanced level users would have been appreciated.
+\section{User Feedback and Analysis}
 
+There were four people who tested the application, of the four, two rated themselves beginner, one intermediate and one advanced. This was a decent range of experience levels, although more intermediate and advanced level testers would have been appreciated.
+
+\subsection{Overall Feedback for the Application}
+
+Feedback for the application as a whole was mixed, with half the testers saying that they would not use the application if it were available. One tester commented that they would prefer to the use the application as a browser extension, looking up definitions for words that they discovered while browsing the web.
+
+There was disagreement in opinion on whether or not the application was easy to use. Half of the testers thought that it was, while another was neutral on the subject and the final one disagreed with the statement, presumably finding it difficult to use. This could presumably be solved by looking more into the design of the application as a whole, rather than focusing on the gloss.
+
+
+\subsection{The Article Discover and Difficulty Rating System}
+
+The advanced and intermediate level tester said that the articles they read were of an appropriate level for them. With the advanced level tester noting that they found the articles with higher difficulty ratings to be of a higher difficulty. 
+
+A problem that occurred with one of the beginner level tester, where the articles listed were all but one categorised as "hard" or "very hard." This lead to a problem with that tester not being able find readable articles for them. The problem could potentially be solved by pulling from different news sources based on the users experience level. For example, a beginner level user like the one who raised the complaint would get articles from sources that specifically target children or learners. While an advanced level user would get articles from a general site.
 
 \subsection{The Gloss and Article Reader}
 
-The most common problem found with the gloss section of the application was the fact that several words were missing from the dictionary. The words missing ranged in scope, from longer compound words that are not commonly found in dictionaries, to more common, smaller words that really should be in the dictionary. However, as this was a third party dictionary api, adding these more common words to the dictionary is not really possible, the solution should probably be to find a better dictionary api.
+There was mostly positive results on whether or not the gloss helped increase the tester's understanding of the articles. Mostly they thought that it had, although for some articles they thought that it had not. There is not enough data when comparing testers and the articles they read to reach a conclusion as to why the gloss was not helpful in those cases. It would require multiple testers reading the same article.
 
-Going back to inability for compound words to be translated, there was brief talk during meetings with the supervisor meetings about using machine learning algorithms to break them into component parts and translate those, adding in this logic was dropped due to time constraints. However, due to the fact that the advanced and intermediate testers both attempted to gloss these words more often than the shorter words that were in the dictionary, developing it would have most likely been beneficial for the application overall. 
+There was very mixed feedback as to whether or not the application helped with understanding of unknown words. The correlation in this appears to come down to the testers experience level, with the advanced tester reporting that it did not help at all, while the beginners and the intermediate reporting that it helped. This is probably to with the problems faced in terms of gloss content, which are discussed in detail below.
+
+All the testers liked the position of the annotations, meaning that a marginal gloss was probably the best idea in terms of gloss position. However one of them notes that it would be better if the annotations scrolled automatically to the new one when clicked. Expanding on this idea. It might be possible to use this as method to dismiss the gloss items automatically as well. 
+
+\subsection{Gloss Content}
+
+The most common problem found with the gloss section of the application was the fact that several words were missing from the dictionary. The words missing ranged in scope, from longer compound words that are not commonly found in dictionaries, to more common, smaller words that really should be in the dictionary. However, as this was a third party dictionary api, adding these more common words to the dictionary is not really possible, the solution should probably be to find a better dictionary api. However,  most of the translations that were provided were considered by the testers to be accurate. 
+
+Returning to the inability for compound words to be translated, there was brief talk during meetings with the supervisor meetings about using machine learning algorithms to break them into component parts and translate those, adding in this logic was dropped due to time constraints. However, due to the fact that the advanced and intermediate testers both attempted to gloss these words more often than the shorter words that were in the dictionary, developing it would have most likely been beneficial for the application overall. 
 
 In addition, a tester noted several times that the content of the grammatical information provided in the gloss was wrong. The intent behind the design of the gloss was to provide every possible reason why a word might currently be in the form that is was in, however the tester found this confusing. It would be better going forward to try and develop a way to determine from context the exact reason the word is currently in that form. 
 
-Overall feedback relating to this was that the dictionary content was lacking, future builds of the project should probably move on to a better system obtaining translations and grammatical information, as the service been used in the current application lead overall to more incorrect grammatical information, missing translations and other mistakes than successful gloss attempts.
+Overall feedback relating to this was that the dictionary content was lacking, future builds of the project should probably move on to a better system obtaining of translations and grammatical information, as the service been used in the current application lead overall to more incorrect grammatical information, missing translations and other mistakes than successful gloss attempts. 
 
-A few problems relating to the design of the gloss were also found in the application, Primarily, the fact that long would make the cross symbol used to dismiss a gloss item disappear off the side of the gloss, making it impossible to dismiss the gloss item without zooming out. Another problem that was noted by one of the user, was that the green colour of the noun glosses and the red colour of the other gloss implied success and failure respectively, none of the other testers noted this but the colour scheme of the gloss is easily adjustable.
+A few problems relating to the design of the gloss were also found in the application, Primarily, the fact that long would make the cross symbol used to dismiss a gloss item disappear off the side of the gloss, making it impossible to dismiss the gloss item without zooming out. Another problem that was noted by one of the testers, was that the green colour of the noun glosses and the red colour of the other gloss implied success and failure respectively, none of the other testers noted this but the colour scheme of the gloss is easily adjustable.
 
 

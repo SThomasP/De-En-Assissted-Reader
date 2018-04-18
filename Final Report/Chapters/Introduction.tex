@@ -1,19 +1,24 @@
-\chapter{Project Description}
+\chapter{Introduction}
+
 \section{Problem}
-A gloss is a language learning tool that assists with increasing the user's reading comprehension and vocabulary size by proving a prompt related to a selected word. The prompt can  can have a variety of contents such as a translation into the author's native language, a definition in the source or various pieces of audio-visual media.
+While learning a second language, many learners encounter problems while trying to find and read texts written in the language they are learning. Modern technology has helped with this to some regard, with development of glosses, which provide prompts for vocabulary words. These prompts can be translations of the words, definitions in the source language, audio visual materials or any combination of the above. 
 
-There have been a number of gloss tools developed for assisting a learner with second language learning. Most of these tools are tailored to a text or set of texts and cannot be applied generally, this means that there is no guarantee that the learner will find the glossed texts interesting, leading to the learning not engaging with the text to the extent that they might if they enjoyed reading about the subject of the text. 
+The problem most glosses developed today have is that they are specifically tailored for the text they are being used on. The words that can be examined are pre-selected, the gloss content is pre-written and the text has been pre-selected. This still leaves multiple problems for the user. They could not find the text interesting, they could already know the words in the gloss and they might find the text too easy. 
 
-A learner, especially an intermediate learner will struggle to perform the reading required on news site home pages and aggregate sites to find texts related to their interests and of a suitable to difficulty level.
+\section{Solution and Goals}
 
-\section{Goals}
+The solution to this problem was, perhaps unsurprisingly, to develop a prototype application. This application should be able to:
 
-The goal of this project is to develop a program that will provide a custom gloss that can be applied to every article, only glossing text that the learner requests. The gloss will then display information related to the word that has been selected, this information can then be dismissed by the learner.
+\begin{itemize}
+	\item Allow the user to a select a category of articles that they find interesting.
+	
+	\item Find and pull articles in that category from a variety of news sources.
+	
+	\item Rate the articles based on their perceived difficulty for the user.
+	
+	\item Allow the user to activate a gloss on any and all words in the article. 
+\end{itemize}
 
-The program will find and list articles to user, based on a selected category. It will also apply a difficulty rating to those articles, rating them to their relative difficulty to the user.
+To make sure as many platforms are supported as easily as possible, the application will run in a web browser and be hosted remotely. The initial prototype of the application will support German in order to minimise the number of variable that need to be taken into account and because German is a language the developer can speak, allowing for easier development of the application.
 
-\section{Scope}
-
-The scope of this project is the building of a web application that fills the above goals. It will allow the leaner to input a category and their experience level. The application will then show a list view of articles in that category as well as the article's difficulty in relationship to the user.
-
-Once on the article view, the leaner can then select a word by clicking on it, the application will then show a gloss with information about the selected word. Once it is no longer needed, this information can be dismissed. The learner will then be able return to the  article selection screen, to select another article and any words in the gloss at that time will preserved in the new article. 
+Once developed, this  prototype application will then be user tested by a number of German learners of varying experience levels. They will provide feedback on their experiences using the application, which will then be examine and used to formulate the idea of a release build. 
