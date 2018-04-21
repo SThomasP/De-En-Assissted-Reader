@@ -5,16 +5,19 @@ import os
 import uuid
 import logging
 
+# load the article finder as well as the application framework
 news = ArticleFinder()
 app = Flask(__name__)
 app.secret_key = os.environ.get('SECRET_KEY')
 
+# set up logging for the application
 fh = logging.FileHandler('Gara.log')
 fh.setLevel(logging.DEBUG)
 fh.setFormatter(logging.Formatter(fmt='%(asctime)s [%(levelname)s]: "%(message)s"', datefmt='%Y-%m-%d %H:%M:%S'))
 app.logger.addHandler(fh)
 
 
+# Dictionary lookup, extract the information from the POST variables and create a dictionary entry based on them
 @app.route('/dict', methods=['POST'])
 def html_lookup():
     word = request.form['word']
@@ -25,6 +28,8 @@ def html_lookup():
     return render_template("entry.html", entry=dict_entry)
 
 
+# make sure the user has a session_id
+# and check to make sure they're not using the app out of order
 @app.before_request
 def check_for_session():
 
@@ -41,6 +46,7 @@ def check_for_session():
         return redirect('/')
 
 
+# article view, show the user the contents of the requested article
 @app.route('/read/<article_id>')
 def read_article(article_id):
     session['article_id'] = article_id
@@ -50,6 +56,8 @@ def read_article(article_id):
     return response
 
 
+# the user's experience level and selected category is saved to their session information here
+# the user is then redirected to the article listing view
 @app.route('/start', methods=['POST'])
 def setup_session():
     session.clear()
@@ -61,12 +69,14 @@ def setup_session():
     return redirect('/find')
 
 
+# article listing view, show the user the articles in their selected category, along with their ratings
 @app.route('/find')
 def find_articles():
     if 'article_id' in session:
         aid = session.pop('article_id')
         app.logger.info("{user} has stopped reading {article}".format(user=session['user_id'], article=aid))
         session['count'] += 1
+        # if the user has read three articles, reset their session
         if session['count'] == 3:
             return redirect('/finish')
     category = session['cat']
@@ -74,6 +84,7 @@ def find_articles():
     return render_template('search.html', articles=articles, category=category)
 
 
+# initial view, where the user inserts their preferred category and experience level
 @app.route('/')
 def article_entry():
     cat_list = list(CAT_MAP.keys())
@@ -81,12 +92,14 @@ def article_entry():
     return render_template('home.html', categories=CAT_MAP, cat_list=cat_list)
 
 
+# finish view, give the user a link to survey once they have read three articles
 @app.route('/finish')
 def finish_reading():
     user_id = session['user_id']
     return render_template('finish.html', user_id=user_id)
 
 
+# reset the application for the next user
 @app.route('/reset')
 def reset_app():
     app.logger.info("{user} has stopped using the application".format(user=session['user_id']))
@@ -94,5 +107,6 @@ def reset_app():
     return redirect('/')
 
 
+# run the application
 if __name__ == '__main__':
     app.run()

@@ -3,9 +3,11 @@ import requests
 import spacy
 import os
 
+# the domains for looking stuff up in the api
 OD_TRANSLATE = 'https://od-api.oxforddictionaries.com:443/api/v1/entries/de/{word}/translations=en'
 OD_LEMMA = 'https://od-api.oxforddictionaries.com:443/api/v1/inflections/de/{word}'
 
+# Which fine POS are part of which coarse POS
 POS_DICT = {'Adjective': ['ADJA', 'ADJD'],
             'Preposition': ['APPO', 'APPR', 'APPRART', 'APZR'],
             'Adverb': ['ADV', 'PAV', 'PROAV', 'PWAV'],
@@ -21,38 +23,51 @@ POS_DICT = {'Adjective': ['ADJA', 'ADJD'],
             'Other': ['FM', 'TRUNC', 'XY'],
             'Verb': ['VMFIN', 'VMINF', 'VMPP', 'VVFIN', 'VVIMP', 'VVINF', 'VVIZU', 'VVPP']}
 
+# lookup coarse pos from fine pos
 TAG_DICT = {}
 
+# generate TAG_DICT from POS_DICT
 for pos in POS_DICT:
     for tag in POS_DICT[pos]:
         TAG_DICT[tag] = pos
 
 
+# dictionary lookup
 class Dictionary:
     def __init__(self, config_vars):
         self._headers = config_vars
 
+    # lookup a word in the dictionary
     def lookup(self, word, root, pos):
+        # get the translations of the root word
         r = requests.get(OD_TRANSLATE.format(word=root), headers=self._headers)
+
+        # if they're found, extract them
         if r.status_code == 200:
             r_json = r.json()['results']
             for lexEntry in r_json[0]['lexicalEntries']:
                 if lexEntry['lexicalCategory'].lower() == pos.lower():
                     translations = self.sort_english(lexEntry['entries'])
                     if len(translations) != 0:
+                        # then try and get grammatical features
                         grammar = self.get_grammar(word, pos)
                         return True, translations, grammar
         return False, [], []
 
+    # get the grammatical features of the word
     def get_grammar(self, word, pos):
+        # look it up in the api.
         r = requests.get(OD_LEMMA.format(word=word), headers=self._headers)
         if r.status_code == 200:
             r_json = r.json()['results']
+            # find the correct usage of the word
             for lexEntry in r_json[0]['lexicalEntries']:
                 if lexEntry['lexicalCategory'].lower() == pos.lower():
+                    # sort the grammar
                     return self.sort_grammar(lexEntry['grammaticalFeatures'])
         return []
 
+    # sort the grammar into possible use cases.
     @staticmethod
     def sort_grammar(gram_fe):
         counter = {}
@@ -99,6 +114,7 @@ class Dictionary:
 
         return sorted
 
+    # iterate through the uses of a word, looking for translations
     @staticmethod
     def sort_english(entries):
         en = []
@@ -113,22 +129,27 @@ class Dictionary:
         return en
 
 
+# get the config information from the environment variables.
 dict_config = {'app_id': os.environ.get('APP_ID'), 'app_key': os.environ.get('APP_KEY')}
 
+# load the dictionary
 dictionary = Dictionary(dict_config)
 
 
+# an individual entry of the dictionary
 class DictEntry:
+    # create the dictionary entry entry
     def __init__(self, word, lemma, tag):
         self.word = word
         self.root = lemma
         self.tag = tag
         self.pos = TAG_DICT[tag]
+        # set the css class
         if self.pos in ['Noun', 'Verb', 'Adjective', 'Unknown']:
             self.css_cat = self.pos.lower()
         else:
             self.css_cat = 'other'
-
+        # if there can be a translation, look it up and save it
         if self.pos not in ['Proper Noun', 'Other', 'Numeral']:
             self.found, translation, grammar = dictionary.lookup(word, lemma, self.pos)
             if self.found:
@@ -138,14 +159,16 @@ class DictEntry:
                 self.english = 'No translation found'
                 self.grammar_features = []
 
+        # if it is not possible for the word to have a translation, don't bother.
         else:
             self.found = False
             self.english = 'Not translatable'
             self.grammar_features = []
+
+        # get a tag explanation from SpaCy
         self.grammar_explanation = spacy.explain(tag)
 
-
-
+    # convert the list of translations provided by the dictionary into something human readable
     @staticmethod
     def gen_english_string(english):
         en_string = ''
@@ -154,7 +177,7 @@ class DictEntry:
         en_string = en_string[2:len(en_string)]
         return en_string
 
-
+    # convert the grammar use cases provided by the dictionary into something human readable
     @staticmethod
     def list_features(grammar):
         grammar_list = []
@@ -167,6 +190,7 @@ class DictEntry:
         return grammar_list
 
 
+# test lookup
 if __name__ == '__main__':
     trains = DictEntry("Zug", "Zug", "NN")
     print(trains.grammar_features)

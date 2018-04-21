@@ -12,6 +12,13 @@ $('.word').on('click', function (event) {
     });
 });
 
+function popupEntry(entry) {
+    var entryList = document.getElementById("dict-entries");
+    entryList.insertAdjacentHTML('beforeend', entry);
+
+}
+
+
 function removeEntry(event) {
     var entryToDelete = event.target.parentNode.parentNode;
     var parent = entryToDelete.parentNode;
@@ -19,11 +26,6 @@ function removeEntry(event) {
 
 }
 
-function popupEntry(entry) {
-    var entryList = document.getElementById("dict-entries");
-    entryList.insertAdjacentHTML('beforeend', entry);
-
-}
 
 
 

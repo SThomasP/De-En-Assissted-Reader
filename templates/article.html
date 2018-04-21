@@ -17,17 +17,17 @@
                 <p><b><a href="{{ article.url }}">{{ article.authors[1] }}</a> </b></p>
                 <article>
                     <p>
-                        {% for token in article.article_model %}
-                            {% if token.pos_ not in ["PUNCT","SPACE"] %}
-                                <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}"
-                                      data-pos="{{ token.pos_ }}">{{ token.text.strip() }}</span>
-                            {% elif token.pos_ == "SPACE" %}
-                                </p><p>
-                            {% else %}
-                                {{ token.text.strip() }}
-                            {% endif %}
-                        {% endfor %}
-                        </p>
+                    {% for token in article.article_model %}
+                    {% if token.pos_ not in ["PUNCT","SPACE"] %}
+                        <span class="word" data-lemma="{{ token.lemma_ }}" data-tag="{{ token.tag_ }}" data-pos="{{ token.pos_ }}">{{ token.text.strip() }}</span>
+                    {% elif token.pos_ == "SPACE" %}
+                    </p>
+                    <p>
+                    {% else %}
+                    {{ token.text.strip() }}
+                    {% endif %}
+                    {% endfor %}
+                    </p>
                 </article>
             </div>
             <div id="dict-entries" class="col-md-3">
