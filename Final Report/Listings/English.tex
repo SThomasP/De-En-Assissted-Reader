@@ -1,15 +1,16 @@
 \begin{lstlisting}[caption={[Translation Extraction Code] Python code for obtaining the translations of a word from the information provided by the \textit{Oxford Dictionaries API}}, label=lst:eng, breaklines=true, language=python, breakatwhitespace=true, float]
-@staticmethod
-def sort_english(entries):
-    en = []
-    for entry in entries:
-	    if 'senses' in entry.keys():
-		    senses = entry['senses']
-		    for sense in senses:
-			    if 'translations' in sense.keys():
-				    translations = sense['translations']
-				    for translation in translations:
-					    en.append(translation['text'])
-    return en
+    # iterate through the uses of a word, looking for translations
+    @staticmethod
+    def sort_english(entries):
+        en = []
+        for entry in entries:
+            if 'senses' in entry.keys():
+                senses = entry['senses']
+                for sense in senses:
+                    if 'translations' in sense.keys():
+                        translations = sense['translations']
+                        for translation in translations:
+                            en.append(translation['text'])
+        return en
 
 \end{lstlisting}

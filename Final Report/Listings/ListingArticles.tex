@@ -1,12 +1,21 @@
 \begin{lstlisting}[caption={[Article Discovery Code] Python code for obtaining news articles from the \textit{Google News} RSS feeds.}, label=lst:disc, language=python, float]
+    # get the articles in a category
     def lookup(self, category, user_level):
+
+        # get the rss feed
         r = requests.get(CAT_MAP[category]['url'])
         root = ElementTree.fromstring(r.text)
+
+        # get the old articles from memory
         old_aritcles = [a.id for a in self.articles[category]]
+
+        # iterate through the article in the rss feed, extracting the articles
         for item in root.iter('item'):
             url = item.find('link').text
             title = item.find('title').text
             aid = str(uuid.uuid5(uuid.NAMESPACE_URL, url))
+
+            # if the article is not already saved, try to parse and rate it (some articles fail)
             if aid not in old_aritcles:
                 try:
                     self.articles[category].append(Article(url, title, aid, category))
@@ -14,5 +23,7 @@
                     print('Zero Divison Error')
                 except ArticleException:
                     print('Article Exception')
+
+        # return the list of articles classified.
         return self.classify(self.articles[category], user_level)
 \end{lstlisting}

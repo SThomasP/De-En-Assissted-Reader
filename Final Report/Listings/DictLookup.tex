@@ -1,15 +1,18 @@
 \begin{lstlisting}[caption={[Gloss Generation Code] Python code used to generate the gloss content and organise so it can be formatted into a gloss item.}, label=lst:dict, breaklines=true, language=python, breakatwhitespace=true, float]
+# an individual entry of the dictionary
 class DictEntry:
+    # create the dictionary entry entry
     def __init__(self, word, lemma, tag):
         self.word = word
         self.root = lemma
         self.tag = tag
         self.pos = TAG_DICT[tag]
+        # set the css class
         if self.pos in ['Noun', 'Verb', 'Adjective', 'Unknown']:
             self.css_cat = self.pos.lower()
         else:
             self.css_cat = 'other'
-
+        # if there can be a translation, look it up and save it
         if self.pos not in ['Proper Noun', 'Other', 'Numeral']:
             self.found, translation, grammar = dictionary.lookup(word, lemma, self.pos)
             if self.found:
@@ -19,9 +22,12 @@ class DictEntry:
                 self.english = 'No translation found'
                 self.grammar_features = []
 
+        # if it is not possible for the word to have a translation, don't bother.
         else:
             self.found = False
             self.english = 'Not translatable'
             self.grammar_features = []
+
+        # get a tag explanation from SpaCy
         self.grammar_explanation = spacy.explain(tag)
 \end{lstlisting}

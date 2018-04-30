@@ -1,47 +1,48 @@
 \begin{lstlisting}[caption={[Grammatical Features Extraction Code] Python code that extracts and sorts the grammatical features given by \textit{Oxford Dictionaires API}}, label=lst:gramm, breaklines=true, language=python, breakatwhitespace=true, float]
-@staticmethod
-def sort_grammar(gram_fe):
-    counter = {}
-    # count the occurrences of each grammatical type
-    for feature in gram_fe:
-        g_type = feature['type'].lower()
-        if g_type in counter.keys():
-            counter[g_type] += 1
-        else:
-            counter[g_type] = 1
-    # determine the maximum
-    if counter == {}:
-        return []
-    maximum = max(counter, key=(lambda key: counter[key]))
-    # create the empty dictionaries
-    sorted = [{} for _ in range(counter[maximum])]
+    # sort the grammar into possible use cases.
+    @staticmethod
+    def sort_grammar(gram_fe):
+        counter = {}
+        # count the occurrences of each grammatical type
+        for feature in gram_fe:
+            g_type = feature['type'].lower()
+            if g_type in counter.keys():
+                counter[g_type] += 1
+            else:
+                counter[g_type] = 1
+        # determine the maximum
+        if counter == {}:
+            return []
+        maximum = max(counter, key=(lambda key: counter[key]))
+        # create the empty dictionaries
+        sorted = [{} for _ in range(counter[maximum])]
 
-    # create another dictionary to keep track of how many times a type has occurred while sorting.
-    occurred = {}
-    for key in counter.keys():
-        occurred[key] = 0
+        # create another dictionary to keep track of how many times a type has occurred while sorting.
+        occurred = {}
+        for key in counter.keys():
+            occurred[key] = 0
 
-    # sort the features
-    for i in range(len(gram_fe)):
-        g_type = gram_fe[i]['type'].lower()
-        text = gram_fe[i]['text'].lower()
-        o = occurred[g_type]
-        sorted[o][g_type] = text
-        if o == counter[g_type] - 1:
-            for j in range(o, len(sorted)):
-                sorted[j][g_type] = text
-        occurred[g_type] += 1
+        # sort the features
+        for i in range(len(gram_fe)):
+            g_type = gram_fe[i]['type'].lower()
+            text = gram_fe[i]['text'].lower()
+            o = occurred[g_type]
+            sorted[o][g_type] = text
+            if o == counter[g_type] - 1:
+                for j in range(o, len(sorted)):
+                    sorted[j][g_type] = text
+            occurred[g_type] += 1
 
-    # some stuff that has to be coded manually
-    if 'person' in sorted[0].keys() and 'number' in sorted[0].keys() and len(sorted) >= 2:
-        if sorted[0]['person'] == 'second' and sorted[1]['person'] == 'third':
-            sorted[0]['person'] = 'third'
-            sorted[1]['person'] = 'second'
+        # some stuff that has to be coded manually
+        if 'person' in sorted[0].keys() and 'number' in sorted[0].keys() and len(sorted) >= 2:
+            if sorted[0]['person'] == 'second' and sorted[1]['person'] == 'third':
+                sorted[0]['person'] = 'third'
+                sorted[1]['person'] = 'second'
 
-    if 'degree' in sorted[0].keys() and len(sorted) > 1:
-        if sorted[0]['degree'] == 'positive' and sorted[1]['degree'] == 'comparative':
-            sorted[0]['degree'] = 'comparative'
-            sorted[1]['degree'] = 'positive'
+        if 'degree' in sorted[0].keys() and len(sorted) > 1:
+            if sorted[0]['degree'] == 'positive' and sorted[1]['degree'] == 'comparative':
+                sorted[0]['degree'] = 'comparative'
+                sorted[1]['degree'] = 'positive'
 
-    return sorted
+        return sorted
 \end{lstlisting}
