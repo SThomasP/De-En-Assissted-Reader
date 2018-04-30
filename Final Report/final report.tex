@@ -6,10 +6,11 @@
 \usepackage{rotating}
 \usepackage[ngerman,english]{babel} % Use the progress Style
 \newcommand{\code}[1]{\texttt{#1}}
-\usepackage[backend=biber, style=authoryear]{biblatex}  % Location of your graphics files
+\usepackage[backend=biber, style=ieee]{biblatex}  % Location of your graphics files
 \addbibresource{Bibliography.bib}
 \usepackage{tabu}
 \usepackage{float}
+\renewcommand{\lstlistlistingname}{List of Listings}
 \hypersetup{colorlinks=true}   % Set to false for black/white printing
 %\input{Definitions}            % Include your abbreviations
 %% ----------------------------------------------------------------
@@ -24,12 +25,12 @@
 \date       {\today}
 \subject    {}
 \keywords   {}
-\supervisor {Prof. Adam Prugel-Bennett}
+\supervisor {Prof. Adam Prügel-Bennett}
 \examiner   {Prof. Lie-Liang Yang}
 \maketitle
 \begin{abstract}
 	
-This report proposes and then details the development and testing process of a gloss application designed to help German language learners discover and then read authentic articles from German news sources. It begins by outlining the application before starting research into the logic and methods such an application would use. Once these have been decided on, the project then goes on to detail how the application was designed and programmed, listing the choices made and the reasoning behind them. The report then details and analyses the results of user testing on the application, before performing a critical evaluation of the both the application and the project as a whole, detailing their flaws and the various methods by which they could be improved. The report then concludes by examining how the application could be improved for a future commercial version before deciding that such improvements are not viable.	 
+This report proposes and then details the development and testing process of a web application designed to help German language learners discover and then read authentic articles from German news sources. It begins by outlining the application, which is a combination of system that pulls articles from various sources and then rates their difficulty relative to the user, the application then presents the article with a gloss annotation system to help to user read the article. The report then details research into the logic and methods such an application would use. Once these have been decided on, the report then goes on to detail how the application was designed and programmed, listing the choices made and the reasoning behind them. The report then details and analyses the results of user testing of the application, before performing a critical evaluation of both the application and the project as a whole, detailing their successes, flaws and the various methods by which they could be improved. The report then concludes by examining how the application could be improved for a future commercial version before deciding that such improvements are not viable.	 
 	
 \end{abstract}
 \tableofcontents
@@ -38,15 +39,15 @@ This report proposes and then details the development and testing process of a g
 \lstlistoflistings
 \mainmatter
 %% ----------------------------------------------------------------
-\include{Chapters/Introduction}         % Proofreading 1
-\include{Chapters/ProjectPlan}          % Proofreading 1
-\include{Chapters/BackgroundReading}    % Proofreading 1
-\include{Chapters/ApplicationOutline}   % Proofreading 1
-\include{Chapters/ApplicationDesign}    % Proofreading 1
+\include{Chapters/Introduction}         % Proofreading 2
+\include{Chapters/ProjectPlan}          % Proofreading 2
+\include{Chapters/BackgroundReading}    % Proofreading 2
+\include{Chapters/ApplicationOutline}   % Proofreading 2
+\include{Chapters/ApplicationDesign}    % Proofreading 2
 \include{Chapters/ApplicationLogic}     % Proofreading 1
-\include{Chapters/UserTesting}          % Proofreading 1
-\include{Chapters/Evaluation}           % Proofreading 1
-\include{Chapters/Conclusion}           % Proofreading 1
+\include{Chapters/UserTesting}          % Proofreading 2
+\include{Chapters/Evaluation}           % Proofreading 2
+\include{Chapters/Conclusion}           % Proofreading 2
 \appendix
 \include{Appendicies/TechnologiesUsed}
 \include{Appendicies/DesignArchive}

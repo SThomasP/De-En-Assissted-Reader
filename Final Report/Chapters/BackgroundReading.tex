@@ -5,43 +5,47 @@ Reading for the project can be divided into reading about the gloss aspect of th
 
 \section{Glosses}
 
-The research done into glosses is divided into to parts, the first being research into whether or not glosses are effective, the second part was about the various designs of glosses, trying to discover which ones were the most effective.
+The research done into glosses is divided into two parts, the first being research into whether or not glosses are effective, the second part was about the various designs of glosses, trying to discover which ones were the most effective.
 
 \subsection{Effectiveness of Electronic Glosses}
 
-A meta study \autocite{abraham2008} which examined the literature available on glosses, finds that, overall, learners with access to an electronic gloss will perform better than learners without access, in both skills of reading comprehension and vocabulary retention, particularly on intermediate learners. \textcite{abraham2008} then notes that the small sample size of studies analysed should mean that these studies should not be seen as conclusive evidence, however suggestive evidence is enough to establish that development of this project should continue.
+A meta study \autocite{abraham2008} which examined the literature available on glosses, finds that, overall, learners with access to an electronic gloss will perform better than learners without access, in both skills of reading comprehension and vocabulary retention, particularly on intermediate learners. \textcite{abraham2008} then notes that the small sample size of studies analysed should mean that these studies should not be seen as conclusive evidence, but suggestive evidence is enough to establish that development of this project should continue.
 
-Another caveat that should also be added is that most of the studies analysed in \textcite{abraham2008} are of tailor-made glosses designed for a specific text, as such the research findings of these studies and the meta-study may not be fully applicable to this project.
+Another caveat that should also be added is that most of the studies analysed in \textcite{abraham2008} are of tailor-made glosses designed for a specific text. As such the research findings of these studies and the meta-study may not be fully applicable to this project.
 
 
 \subsection{Design Methods of Electronic Glosses}
 
-\textcite{roby1999} identifies three main parts of a gloss' design, its presentation, taxonomy and density. Presentation is how the gloss is presented in relation to the text and taxonomy is the content of the gloss, both of these parts had research conducted into effective design methods. Finally, there is gloss density, which is the amount of content in the gloss. As this is determined by the user, it was decided that research into effective densities was not needed as it would not be used.
+\textcite{roby1999} identifies three main parts of a gloss' design, its presentation, taxonomy and density. Presentation is how the gloss is presented in relation to the text and taxonomy is the content of the gloss both of these parts had research conducted into effective design methods. Finally, there is gloss density, which is the amount of content in the gloss. As this is determined by the user, it was decided that research into effective densities was not needed as it would not be used.
 
 \subsubsection{Gloss Presentation}
 
 \textcite{chen2016} identifies the three most researched gloss presentations as: in-text, marginal and pop up.  \textcite{abuseileek2008} finds that out of these three the marginal presentation category performs the best in both vocabulary retention and reading comprehension, while \textcite{marefat2016} finds that pop-ups are more effective than marginal for reading comprehension. As \textcite{chen2016} says, there has not been sufficient research into the effectiveness of the various gloss locations for any valid conclusions to be drawn.
+
+As there is not sufficient evidence that any gloss presentation method is the most effective, other factors can be considered when deciding upon which one to implement. The marginal gloss method is the easiest to implement in HTML so it makes sense to use that one. 
 
 \subsubsection{Gloss Taxonomy}
 
 \textcite{gettys2001} finds that dictionary style translations perform better than sentence level translations, suggesting that it would be better
  to translate the dictionary form of the word, providing information about how the word changed from its dictionary form to its current form in the article. 
 
-\textcite{bell2000}  Compared first-language English and French translations to second-language Spanish synonyms to find that the study's participants overwhelmingly preferred that the gloss content be in the leaner's native language rather than the language being learnt. 
+\textcite{bell2000}  Compared first-language English and French translations to second-language Spanish synonyms to find that the study's participants overwhelmingly preferred the gloss content to be in the leaner's native language rather than the language being learnt. 
 
-There is a large body of research that suggests that providing multimedia glosses is more effective than providing text only ones. \autocite{yoshii2006, kost1999}. This is harder to implement  as it would the application to have a better understanding of the word's context to provided an accurate image of the word. 
+There is a large body of research that suggests that providing multimedia glosses is more effective than providing text only ones \autocite{yoshii2006, kost1999}. This is harder to implement  as the application would need to have a better understanding of the word's context to provided an accurate image of the word.
+
+Based on the research, as well as other factors mentioned, the taxonomy of the gloss in the application should be text based, dictionary level translations as well as grammatical information on why the word is in that form. 
 
 \section{Article Difficulty Rating}
 
 The reading for this section of the application was harder to find, little has been written about the discovery and difficulty rating of texts for second language learners in general, or German learners in specific. 
 
-The easiest method of calculating the difficulty of an article seems to be a mathematical expression of it's readability, called a readability index. Perhaps the most famous of these being the Flesch Reading Ease (FRE) formula \autocite{flesch1948}. This formula is for America English, but similar formulae have been developed for German, two of these are highlighted below.
+The easiest method of calculating the difficulty of an article seems to be a mathematical expression of it's readability, called a readability index. Perhaps the most famous of these being the Flesch Reading Ease (FRE) formula \autocite{flesch1948}. This formula is for American English, but similar formulae have been developed for German, two of these are highlighted below.
 
-The first formula for German is an adaptation of the FRE formula as proposed in \textcite{amstad1978}, this relies on much the same model as the original FRE formula. The formula takes into account the longer average word length in the German language, this formula is show in Figure \ref{fig:fre} where ASL is the average sentence length and ASW is the average syllables per word. This formula maps the readability of the text onto a range of 0 to 100, with 0 being easy and 100 being hard. 
+The first formula for German is an adaptation of the FRE formula as proposed in \textcite{amstad1978}, this relies on much the same model as the original FRE formula but takes into account the longer average word length in the German language, this formula is show in Figure \ref{fig:fre} where ASL is the average sentence length and ASW is the average syllables per word. This formula maps the readability of the text onto a range of 0 to 100, with 0 being easy and 100 being hard. 
 
 \input{Figures/FreFormula}
 
-The other readability index for German is the  Wiener Sachtextformel (WSTF) as proposed in \textcite{bamberger1984}, one version of this is as shown in Figure \ref{fig:wst}. Where MS is the percentage of words with three or syllables, SL is the average sentence length, IW is the percentage of words with six or more characters and ES is the percentage of monosyllabic words. This formula maps the difficulty rating onto a range of 4 to 15, with the lower numbers being easier. This is done to reflect the German school year that is believed to be appropriate for that level of text.
+The other readability index for German is the  Wiener Sachtextformel (WSTF) as proposed in \textcite{bamberger1984}, one version of this is as shown in Figure \ref{fig:wst}. Where MS is the percentage of words with three or more syllables, SL is the average number of words per sentence, IW is the percentage of words with six or more characters and ES is the percentage of monosyllabic words. This formula maps the difficulty rating onto a range of 4 to 15, with the lower numbers being easier. This is done to reflect the German school year that is believed to be appropriate for that level of text.
 
 \input{Figures/WstfFormula}
 

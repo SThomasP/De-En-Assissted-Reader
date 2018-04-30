@@ -1,7 +1,7 @@
 #!/bin/bash
 
 TEX=$(texcount -inc -total -brief -sum Chapters/*.tex)
-PDFC=$(pdftotext FR\ Centre.pdf - | wc -w)
+PDFC=$(pdftotext centre.pdf - | wc -w)
 DIFF=$( expr $PDFC - $TEX)
 echo "Texcount: $TEX"
 echo "PDFcentre: $PDFC"

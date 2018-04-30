@@ -1,4 +1,4 @@
-\begin{lstlisting}[caption={[Article Discovery Code] Python code for obtaining news articles from the \textit{Google News} RSS feeds.}, label=lst:disc, breaklines=true, language=python]
+\begin{lstlisting}[caption={[Article Discovery Code] Python code for obtaining news articles from the \textit{Google News} RSS feeds.}, label=lst:disc, language=python, float]
     def lookup(self, category, user_level):
         r = requests.get(CAT_MAP[category]['url'])
         root = ElementTree.fromstring(r.text)
