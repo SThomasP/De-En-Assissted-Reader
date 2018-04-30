@@ -1,6 +1,6 @@
 \chapter{Background Reading}
 
-Reading for the project can be divided into reading about the gloss aspect of the application, and then reading about a difficulty rating system. Each of these parts of the reading happened independently, as their subject matter are largely unrelated.
+Reading for the project can be divided into reading about the gloss aspect of the application, and then reading about difficulty rating systems. Each of these parts of the reading happened independently, as their subject matter are largely unrelated.
 
 
 \section{Glosses}
@@ -16,11 +16,11 @@ Another caveat that should also be added is that most of the studies analysed in
 
 \subsection{Design Methods of Electronic Glosses}
 
-\textcite{roby1999} identifies three main parts of a gloss' design, its presentation, taxonomy and density. Presentation is how the gloss is presented in relation to the text and taxonomy is the content of the gloss both of these parts had research conducted into effective design methods. Finally, there is gloss density, which is the amount of content in the gloss. As this is determined by the user, it was decided that research into effective densities was not needed as it would not be used.
+\textcite{roby1999} identifies three main parts of a gloss' design, its presentation, taxonomy and density. Presentation is how the gloss is presented in relation to the text and taxonomy is the content of the gloss, both of these parts had research conducted into effective design methods. Finally, there is gloss density, which is the amount of content in the gloss. As this is determined by the user, it was decided that research into effective densities was not needed as it would not be used.
 
 \subsubsection{Gloss Presentation}
 
-\textcite{chen2016} identifies the three most researched gloss presentations as: in-text, marginal and pop up.  \textcite{abuseileek2008} finds that out of these three the marginal presentation category performs the best in both vocabulary retention and reading comprehension, while \textcite{marefat2016} finds that pop-ups are more effective than marginal for reading comprehension. As \textcite{chen2016} says, there has not been sufficient research into the effectiveness of the various gloss locations for any valid conclusions to be drawn.
+\textcite{chen2016} identifies the three most researched gloss presentations as: in-text, marginal and pop up.  \textcite{abuseileek2008} finds that out of these three the marginal presentation category performs the best in both vocabulary retention and reading comprehension, while \textcite{marefat2016} finds that pop-up glosses are more effective than marginal ones for reading comprehension. As \textcite{chen2016} says, there has not been sufficient research into the effectiveness of the various gloss locations for any valid conclusions to be drawn.
 
 As there is not sufficient evidence that any gloss presentation method is the most effective, other factors can be considered when deciding upon which one to implement. The marginal gloss method is the easiest to implement in HTML so it makes sense to use that one. 
 
@@ -41,14 +41,14 @@ The reading for this section of the application was harder to find, little has b
 
 The easiest method of calculating the difficulty of an article seems to be a mathematical expression of it's readability, called a readability index. Perhaps the most famous of these being the Flesch Reading Ease (FRE) formula \autocite{flesch1948}. This formula is for American English, but similar formulae have been developed for German, two of these are highlighted below.
 
-The first formula for German is an adaptation of the FRE formula as proposed in \textcite{amstad1978}, this relies on much the same model as the original FRE formula but takes into account the longer average word length in the German language, this formula is show in Figure \ref{fig:fre} where ASL is the average sentence length and ASW is the average syllables per word. This formula maps the readability of the text onto a range of 0 to 100, with 0 being easy and 100 being hard. 
+The first formula for German is an adaptation of the FRE formula as proposed in \textcite{amstad1978}, this relies on much the same model as the original FRE formula but takes into account the longer average word length in the German language, this formula is show in Figure \ref{fig:fre} where ASL is the average number of words per sentence and ASW is the average number of syllables per word. This formula maps the readability of the text onto a range of 0 to 100, with 0 being easy and 100 being hard. 
 
 \input{Figures/FreFormula}
 
-The other readability index for German is the  Wiener Sachtextformel (WSTF) as proposed in \textcite{bamberger1984}, one version of this is as shown in Figure \ref{fig:wst}. Where MS is the percentage of words with three or more syllables, SL is the average number of words per sentence, IW is the percentage of words with six or more characters and ES is the percentage of monosyllabic words. This formula maps the difficulty rating onto a range of 4 to 15, with the lower numbers being easier. This is done to reflect the German school year that is believed to be appropriate for that level of text.
+The other readability index for German is the  Wiener Sachtextformel (WSTF) as proposed in \textcite{bamberger1984}, one version of this is shown in Figure \ref{fig:wst}. Where MS is the percentage of words with three or more syllables, SL is the average number of words per sentence, IW is the percentage of words with six or more characters and ES is the percentage of monosyllabic words. This formula maps the difficulty rating onto a range of 4 to 15, with the lower numbers being easier. This is done to reflect the German school year that is believed to be appropriate for that level of text.
 
 \input{Figures/WstfFormula}
 
 The two formulae are commonly used together when assessing the readability of texts, being used in a variety of studies, such as \textcite{rottensteiner2010} which uses them both to assess the readability of newly published textbooks. This publication also notes that these formulae only measure the linguistic complexity of the article, ignoring other factors, such as presentation, that influence how easy the article is to read. 
 
-In addition to the formulae listed above there are methods of determining a readability ranking through the use of machine learning. \textcite{hancke2012} attempt to build a readability classification system from a corpus of articles. This paper looks a lot more in depth at a lot of features of the text. However, this model only performed 7.5\% better than the computational scores calculated from the traditional formula. Given the time constraints and the already complex nature of the project, it would not be worth the effort to implement such a model, as the tradition formulae such as WSTF and FRE perform well enough for the purposes of this project. 
+In addition to the formulae listed above there are methods of determining a readability ranking through the use of machine learning. \textcite{hancke2012} attempt to build a readability classification system from a corpus of articles. This paper looks a lot more in depth at a lot of features of the text. However, this model only performed 7.5\% better than the computational scores calculated from the traditional formulae. Given the time constraints and the already complex nature of the project, it would not be worth the effort to implement such a model, as the tradition formulae such as WSTF and FRE perform well enough for the purposes of this project. 
